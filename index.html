@@ -18,411 +18,147 @@
   --accent: #2d5a3d;
   --accent-light: #e8f0eb;
   --accent-mid: #4a8c5c;
-
-  --cl: #1a4a8a; --cl-bg: #e8f0fb; --cl-light: #c5d9f5;
-  --so: #0f5e47; --so-bg: #e2f4ed; --so-light: #a8dfc9;
-  --ni: #8a1a4a; --ni-bg: #fbe8f0; --ni-light: #f5c0d6;
-  --li: #3a6e18; --li-bg: #eaf4e2; --li-light: #bde0a0;
-  --pi: #7a3e0a; --pi-bg: #faf0e3; --pi-light: #f0c890;
+  --danger: #993c1d;
+  --danger-bg: #faece7;
+  --warning: #854f0b;
+  --warning-bg: #faeeda;
 }
-
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-}
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; }
 
 /* SIDEBAR */
-.sidebar {
-  width: 240px;
-  min-height: 100vh;
-  background: var(--white);
-  border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  z-index: 100;
-  overflow-y: auto;
-}
-
-.sidebar-brand {
-  padding: 28px 24px 20px;
-  border-bottom: 1px solid var(--border-light);
-}
-.brand-tag {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent-mid);
-  margin-bottom: 6px;
-}
-.brand-name {
-  font-family: 'DM Serif Display', serif;
-  font-size: 24px;
-  color: var(--text);
-  line-height: 1.1;
-}
-.brand-sub {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-.sidebar-section {
-  padding: 16px 0;
-}
-.sidebar-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  padding: 0 24px;
-  margin-bottom: 6px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 24px;
-  cursor: pointer;
-  font-size: 14px;
-  color: var(--text-muted);
-  transition: all 0.15s;
-  border-left: 3px solid transparent;
-  text-decoration: none;
-}
+.sidebar { width: 240px; min-height: 100vh; background: var(--white); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; overflow-y: auto; }
+.sidebar-brand { padding: 28px 24px 20px; border-bottom: 1px solid var(--border-light); }
+.brand-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-mid); margin-bottom: 6px; }
+.brand-name { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--text); line-height: 1.1; }
+.brand-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.sidebar-section { padding: 16px 0; }
+.sidebar-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); padding: 0 24px; margin-bottom: 6px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 24px; cursor: pointer; font-size: 14px; color: var(--text-muted); transition: all 0.15s; border-left: 3px solid transparent; text-decoration: none; }
 .nav-item:hover { background: var(--bg); color: var(--text); }
-.nav-item.active {
-  color: var(--text);
-  background: var(--bg);
-  border-left-color: var(--accent);
-  font-weight: 500;
-}
-
-.nav-avatar {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 600;
-  flex-shrink: 0;
-}
-
-.alert-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: #e24b4a; margin-left: auto; flex-shrink: 0;
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  padding: 16px 24px;
-  border-top: 1px solid var(--border-light);
-  font-size: 12px;
-  color: var(--text-faint);
-}
+.nav-item.active { color: var(--text); background: var(--bg); border-left-color: var(--accent); font-weight: 500; }
+.nav-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+.alert-dot { width: 6px; height: 6px; border-radius: 50%; background: #e24b4a; margin-left: auto; flex-shrink: 0; }
+.sidebar-footer { margin-top: auto; padding: 16px 24px; border-top: 1px solid var(--border-light); font-size: 12px; color: var(--text-faint); }
 
 /* MAIN */
-.main {
-  margin-left: 240px;
-  flex: 1;
-  min-height: 100vh;
-}
-
-.topbar {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  padding: 16px 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
+.main { margin-left: 240px; flex: 1; min-height: 100vh; }
+.topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 36px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
 .topbar-title { font-size: 20px; font-weight: 500; }
 .topbar-sub { font-size: 13px; color: var(--text-muted); margin-top: 1px; }
-
-.btn-add {
-  display: flex; align-items: center; gap: 7px;
-  padding: 9px 18px;
-  background: var(--accent);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: background 0.15s;
-}
-.btn-add:hover { background: #24492f; }
-.btn-add svg { width: 15px; height: 15px; }
-
+.topbar-actions { display: flex; gap: 8px; }
+.btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; border: 1px solid; }
+.btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
+.btn-primary:hover { background: #24492f; }
+.btn-secondary { background: var(--white); color: var(--text); border-color: var(--border); }
+.btn-secondary:hover { background: var(--bg); }
+.btn-danger { background: var(--danger-bg); color: var(--danger); border-color: #f0c0a8; }
+.btn-danger:hover { background: #f5d5c5; }
+.btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
 .content { padding: 32px 36px; }
-
-/* VIEWS */
 .view { display: none; }
 .view.active { display: block; }
 
-/* STATS ROW */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-  margin-bottom: 28px;
-}
-.stat-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px 18px;
-}
-.stat-val { font-size: 28px; font-weight: 600; color: var(--text); line-height: 1; }
+/* STATS */
+.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 28px; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.stat-val { font-size: 28px; font-weight: 600; line-height: 1; }
 .stat-lbl { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 
-/* PLANNING GENERAL TABLE */
-.planning-wrap {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 24px;
-}
-.planning-month-header {
-  padding: 14px 20px;
-  background: var(--accent);
-  color: white;
-  font-family: 'DM Serif Display', serif;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+/* TABLES */
+.planning-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+.planning-month-header { padding: 14px 20px; background: var(--accent); color: white; font-family: 'DM Serif Display', serif; font-size: 18px; display: flex; align-items: center; justify-content: space-between; }
 .planning-month-header span { font-size: 13px; font-family: 'DM Sans', sans-serif; opacity: 0.8; }
-
-table.plan {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-table.plan thead th {
-  padding: 10px 14px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  border-bottom: 1px solid var(--border-light);
-  text-align: left;
-  background: var(--surface);
-}
+table.plan { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.plan thead th { padding: 10px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-light); text-align: left; background: var(--surface); }
 table.plan tbody tr { border-bottom: 1px solid var(--border-light); transition: background 0.1s; }
 table.plan tbody tr:last-child { border-bottom: none; }
 table.plan tbody tr:hover { background: var(--bg); }
 table.plan tbody td { padding: 11px 14px; vertical-align: middle; }
-
-.date-cell { white-space: nowrap; }
 .date-num { font-size: 20px; font-weight: 600; line-height: 1; }
 .date-day { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-
-.anim-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 4px 10px 4px 6px;
-  border-radius: 20px;
-  font-size: 12px; font-weight: 500;
-}
-.anim-dot { width: 7px; height: 7px; border-radius: 50%; }
-
-.format-tag {
-  display: inline-block;
-  background: var(--accent-light);
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 500;
-  padding: 2px 8px;
-  border-radius: 6px;
-}
-
-.slot-badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 2px 7px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
+.slot-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
 .slot-1 { background: #e8f0fb; color: #1a4a8a; }
 .slot-2 { background: #eaf4e2; color: #3a6e18; }
+.tbd-tag { font-size: 11px; color: var(--warning); background: var(--warning-bg); padding: 2px 8px; border-radius: 6px; font-weight: 500; }
+.confirm-tag { font-size: 11px; color: var(--danger); background: var(--danger-bg); padding: 2px 8px; border-radius: 6px; }
+.format-tag { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 6px; }
 
-.tbd-tag {
-  font-size: 11px;
-  color: #ba7517;
-  background: #faeeda;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-weight: 500;
-}
-.confirm-tag {
-  font-size: 11px;
-  color: #993c1d;
-  background: #faece7;
-  padding: 2px 8px;
-  border-radius: 6px;
-}
-.empty-row td { color: var(--text-faint); font-size: 12px; text-align: center; padding: 18px; }
-
-/* ANIMATEUR VIEW */
-.animateur-hero {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px 28px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.animateur-avatar-big {
-  width: 64px; height: 64px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700;
-  flex-shrink: 0;
-}
+/* ANIMATEUR */
+.animateur-hero { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 24px; display: flex; align-items: center; gap: 20px; }
+.animateur-avatar-big { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; flex-shrink: 0; }
 .animateur-name { font-family: 'DM Serif Display', serif; font-size: 26px; }
 .animateur-meta { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
 .animateur-stats { display: flex; gap: 20px; margin-top: 10px; }
-.animateur-stat { font-size: 13px; }
 .animateur-stat strong { display: block; font-size: 20px; font-weight: 600; line-height: 1.1; }
-
+.animateur-stat { font-size: 13px; }
 .month-block { margin-bottom: 24px; }
-.month-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 18px;
-  color: var(--text);
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-light);
-  display: flex; align-items: center; gap: 10px;
-}
+.month-title { font-family: 'DM Serif Display', serif; font-size: 18px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: 10px; }
 .month-count { font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--text-muted); }
-
-.anim-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 18px;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.anim-card:hover { border-color: var(--accent-mid); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.anim-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 16px; transition: border-color 0.15s; }
+.anim-card:hover { border-color: var(--accent-mid); }
 .card-date { min-width: 44px; text-align: center; }
-.card-date-num { font-size: 22px; font-weight: 700; line-height: 1; color: var(--text); }
+.card-date-num { font-size: 22px; font-weight: 700; line-height: 1; }
 .card-date-day { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
 .card-body { flex: 1; }
 .card-lieu { font-size: 15px; font-weight: 500; margin-bottom: 5px; }
 .card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.card-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
-.reminder-j1 { background: #faece7; color: #993c1d; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
-.reminder-j7 { background: #faeeda; color: #633806; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
+.no-anim-month { border: 1px dashed var(--border); border-radius: 10px; padding: 18px; text-align: center; font-size: 13px; color: var(--text-faint); }
+.reminder-j1 { background: var(--danger-bg); color: var(--danger); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
+.reminder-j7 { background: var(--warning-bg); color: var(--warning); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
 
-.no-anim-month {
-  border: 1px dashed var(--border);
-  border-radius: 10px;
-  padding: 18px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--text-faint);
-}
-
-/* RAPPELS VIEW */
+/* RAPPELS */
 .rappels-section { margin-bottom: 28px; }
-.rappels-heading {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 15px; font-weight: 600;
-  margin-bottom: 12px; padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-light);
-}
-.rappel-row {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin-bottom: 6px;
-}
+.rappels-heading { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
+.rappel-row { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 6px; }
 .rappel-info { flex: 1; }
 .rappel-lieu { font-size: 14px; font-weight: 500; }
 .rappel-who { font-size: 12px; color: var(--text-muted); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
 .rappel-date { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
 
-/* ADD MODAL */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(20,15,10,0.45);
-  z-index: 500;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
+/* ADMIN */
+.admin-section { margin-bottom: 32px; }
+.admin-section-title { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+.admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.admin-profile-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 12px; position: relative; }
+.admin-profile-card:hover { border-color: var(--border-light); }
+.admin-profile-info { flex: 1; }
+.admin-profile-name { font-size: 14px; font-weight: 500; }
+.admin-profile-count { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.admin-profile-actions { display: flex; gap: 6px; }
+.admin-event-row { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px; }
+.admin-event-info { flex: 1; }
+.admin-event-lieu { font-size: 13px; font-weight: 500; }
+.admin-event-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.color-picker-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.color-opt { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s; }
+.color-opt.selected { border-color: var(--text); }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(20,15,10,0.45); z-index: 500; display: none; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal-box {
-  background: var(--white);
-  border-radius: 14px;
-  padding: 28px 28px 24px;
-  width: 440px;
-  max-width: 95vw;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.15);
-}
-.modal-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px;
-  margin-bottom: 20px;
-}
+.modal-box { background: var(--white); border-radius: 14px; padding: 28px 28px 24px; width: 460px; max-width: 95vw; box-shadow: 0 16px 48px rgba(0,0,0,0.15); max-height: 90vh; overflow-y: auto; }
+.modal-title { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 20px; }
 .field { margin-bottom: 14px; }
 .field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
-.field input, .field select {
-  width: 100%;
-  padding: 9px 12px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  font-size: 14px;
-  font-family: 'DM Sans', sans-serif;
-  color: var(--text);
-  background: var(--surface);
-  outline: none;
-  transition: border-color 0.15s;
-}
+.field input, .field select { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--surface); outline: none; transition: border-color 0.15s; }
 .field input:focus, .field select:focus { border-color: var(--accent-mid); }
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-.btn-cancel {
-  padding: 9px 18px;
-  border: 1px solid var(--border);
-  background: transparent;
-  border-radius: 7px;
-  font-size: 13px;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  color: var(--text-muted);
-  transition: all 0.15s;
-}
-.btn-cancel:hover { background: var(--bg); }
 
-/* ANIMATIONS */
+/* CONFIRM DIALOG */
+.confirm-overlay { position: fixed; inset: 0; background: rgba(20,15,10,0.55); z-index: 600; display: none; align-items: center; justify-content: center; }
+.confirm-overlay.open { display: flex; }
+.confirm-box { background: var(--white); border-radius: 12px; padding: 24px; width: 380px; max-width: 95vw; box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+.confirm-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.confirm-text { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+.confirm-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: white; padding: 12px 18px; border-radius: 8px; font-size: 13px; z-index: 700; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .view.active > * { animation: fadeIn 0.2s ease both; }
-
-/* SCROLL */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
@@ -430,105 +166,69 @@ table.plan tbody td { padding: 11px 14px; vertical-align: middle; }
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sidebar">
+<aside class="sidebar" id="sidebar">
   <div class="sidebar-brand">
     <div class="brand-tag">Maison NOA</div>
     <div class="brand-name">Planning<br>Été 2026</div>
     <div class="brand-sub">Juin · Juillet · Août</div>
   </div>
-
   <div class="sidebar-section">
     <div class="sidebar-label">Général</div>
-    <a class="nav-item active" onclick="showView('general', this)">
+    <a class="nav-item active" onclick="showView('general',this)">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Planning général
     </a>
-    <a class="nav-item" onclick="showView('rappels', this)">
+    <a class="nav-item" onclick="showView('rappels',this)">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      Rappels
-      <span class="alert-dot" id="alert-dot"></span>
+      Rappels <span class="alert-dot" id="alert-dot" style="display:none;"></span>
+    </a>
+    <a class="nav-item" onclick="showView('admin',this)">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      Administration
     </a>
   </div>
-
   <div class="sidebar-section">
     <div class="sidebar-label">Animateurs</div>
-    <a class="nav-item" onclick="showView('anim-Clément', this)">
-      <div class="nav-avatar" style="background:var(--cl-bg);color:var(--cl);">CL</div>
-      Clément
-    </a>
-    <a class="nav-item" onclick="showView('anim-Solal', this)">
-      <div class="nav-avatar" style="background:var(--so-bg);color:var(--so);">SO</div>
-      Solal
-    </a>
-    <a class="nav-item" onclick="showView('anim-Nina', this)">
-      <div class="nav-avatar" style="background:var(--ni-bg);color:var(--ni);">NI</div>
-      Nina
-    </a>
-    <a class="nav-item" onclick="showView('anim-Lily', this)">
-      <div class="nav-avatar" style="background:var(--li-bg);color:var(--li);">LI</div>
-      Lily
-    </a>
-    <a class="nav-item" onclick="showView('anim-Pierre', this)">
-      <div class="nav-avatar" style="background:var(--pi-bg);color:var(--pi);">PI</div>
-      Pierre
-    </a>
+    <div id="animateurs-nav"></div>
   </div>
-
-  <div class="sidebar-footer">
-    Maison NOA © 2026
-  </div>
+  <div class="sidebar-footer">Maison NOA © 2026</div>
 </aside>
 
-<!-- MAIN -->
 <main class="main">
   <div class="topbar">
     <div>
       <div class="topbar-title" id="topbar-title">Planning général</div>
       <div class="topbar-sub" id="topbar-sub">Toutes les animations · Été 2026</div>
     </div>
-    <button class="btn-add" onclick="openModal()">
-      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Nouvelle animation
-    </button>
+    <div class="topbar-actions">
+      <button class="btn btn-secondary" onclick="openModal('event')" id="btn-add-event" style="display:none;">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Ajouter animation
+      </button>
+      <button class="btn btn-primary" onclick="openModal('event')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nouvelle animation
+      </button>
+    </div>
   </div>
 
   <div class="content">
-
-    <!-- PLANNING GÉNÉRAL -->
-    <div id="view-general" class="view active">
-      <div class="stats-row" id="stats-row"></div>
-      <div id="general-tables"></div>
-    </div>
-
-    <!-- RAPPELS -->
-    <div id="view-rappels" class="view">
-      <div id="rappels-content"></div>
-    </div>
-
-    <!-- ANIMATEUR VIEWS (generated dynamically) -->
-    <div id="view-anim-Clément" class="view"></div>
-    <div id="view-anim-Solal" class="view"></div>
-    <div id="view-anim-Nina" class="view"></div>
-    <div id="view-anim-Lily" class="view"></div>
-    <div id="view-anim-Pierre" class="view"></div>
-
+    <div id="view-general" class="view active"></div>
+    <div id="view-rappels" class="view"></div>
+    <div id="view-admin" class="view"></div>
+    <div id="view-animateur" class="view"></div>
   </div>
 </main>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal-overlay">
+<!-- MODAL ÉVÉNEMENT -->
+<div class="modal-overlay" id="modal-event">
   <div class="modal-box">
-    <div class="modal-title">Ajouter une animation</div>
-    <div class="field"><label>Date</label><input type="date" id="f-date" /></div>
-    <div class="field"><label>Lieu / Enseigne</label><input type="text" id="f-lieu" placeholder="ex : Leclerc – Fouesnant (29)" /></div>
-    <div class="field"><label>Animateur</label>
-      <select id="f-animateur">
-        <option value="">— choisir —</option>
-        <option>Clément</option><option>Solal</option><option>Nina</option><option>Lily</option><option>Pierre</option>
-      </select>
-    </div>
-    <div class="field"><label>Plage horaire (Format)</label><input type="text" id="f-format" placeholder="ex : 10-13 / 14-18" /></div>
+    <div class="modal-title" id="modal-event-title">Ajouter une animation</div>
+    <input type="hidden" id="f-event-idx" value="-1">
+    <div class="field"><label>Date</label><input type="date" id="f-date"></div>
+    <div class="field"><label>Lieu / Enseigne</label><input type="text" id="f-lieu" placeholder="ex : Leclerc – Fouesnant (29)"></div>
+    <div class="field"><label>Animateur</label><select id="f-animateur"></select></div>
+    <div class="field"><label>Plage horaire (Format)</label><input type="text" id="f-format" placeholder="ex : 10-13 / 14-18"></div>
     <div class="field"><label>Créneau</label>
       <select id="f-slot"><option value="Anim 1">Animation 1</option><option value="Anim 2">Animation 2</option></select>
     </div>
@@ -536,24 +236,65 @@ table.plan tbody td { padding: 11px 14px; vertical-align: middle; }
       <select id="f-confirmed"><option value="1">Oui — confirmé</option><option value="0">Non — à confirmer</option></select>
     </div>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
-      <button class="btn-add" onclick="saveAnim()" style="border-radius:7px;">Enregistrer</button>
+      <button class="btn btn-secondary" onclick="closeModal('event')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveEvent()">Enregistrer</button>
     </div>
   </div>
 </div>
+
+<!-- MODAL PROFIL -->
+<div class="modal-overlay" id="modal-profil">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-profil-title">Ajouter un animateur</div>
+    <input type="hidden" id="f-profil-old-name" value="">
+    <div class="field"><label>Prénom / Nom</label><input type="text" id="f-profil-name" placeholder="ex : Marie"></div>
+    <div class="field"><label>Couleur</label>
+      <div class="color-picker-row" id="color-picker"></div>
+      <input type="hidden" id="f-profil-color">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('profil')">Annuler</button>
+      <button class="btn btn-primary" onclick="saveProfil()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DIALOG -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirm-title">Confirmer la suppression</div>
+    <div class="confirm-text" id="confirm-text"></div>
+    <div class="confirm-actions">
+      <button class="btn btn-secondary btn-sm" onclick="closeConfirm()">Annuler</button>
+      <button class="btn btn-danger btn-sm" id="confirm-ok-btn" onclick="">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 const DAYS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
 const MONTHS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 
-const ANIMATEURS = {
-  'Clément': { bg:'var(--cl-bg)', color:'var(--cl)', initials:'CL', cssVar:'--cl' },
-  'Solal':   { bg:'var(--so-bg)', color:'var(--so)', initials:'SO', cssVar:'--so' },
-  'Nina':    { bg:'var(--ni-bg)', color:'var(--ni)', initials:'NI', cssVar:'--ni' },
-  'Lily':    { bg:'var(--li-bg)', color:'var(--li)', initials:'LI', cssVar:'--li' },
-  'Pierre':  { bg:'var(--pi-bg)', color:'var(--pi)', initials:'PI', cssVar:'--pi' },
-  '?':       { bg:'#f1efe8', color:'#888780', initials:'?', cssVar:null },
-};
+const COLOR_PALETTE = [
+  {name:'bleu',    dot:'#1a4a8a', bg:'#e8f0fb', text:'#0c3270'},
+  {name:'vert',    dot:'#0f5e47', bg:'#e2f4ed', text:'#084033'},
+  {name:'rose',    dot:'#8a1a4a', bg:'#fbe8f0', text:'#620f33'},
+  {name:'sauge',   dot:'#3a6e18', bg:'#eaf4e2', text:'#274d0f'},
+  {name:'ambre',   dot:'#7a3e0a', bg:'#faf0e3', text:'#572b05'},
+  {name:'violet',  dot:'#4a2e8a', bg:'#eeebfb', text:'#311f62'},
+  {name:'teal',    dot:'#0f6e6e', bg:'#e2f4f4', text:'#084f4f'},
+  {name:'corail',  dot:'#993c1d', bg:'#faece7', text:'#712b13'},
+];
+
+let ANIMATEURS = [
+  {name:'Clément', color: COLOR_PALETTE[0]},
+  {name:'Solal',   color: COLOR_PALETTE[1]},
+  {name:'Nina',    color: COLOR_PALETTE[2]},
+  {name:'Lily',    color: COLOR_PALETTE[3]},
+  {name:'Pierre',  color: COLOR_PALETTE[4]},
+];
 
 let DATA = [
   {date:'2026-06-06',lieu:'Salon Gastro – Quintin',animateur:'Clément',format:'',slot:'Anim 1',confirmed:true},
@@ -577,182 +318,166 @@ let DATA = [
   {date:'2026-08-14',lieu:'Fouesnant – Leclerc (29)',animateur:'?',format:'',slot:'Anim 1',confirmed:false},
 ];
 
-function getMonth(dateStr) { return MONTHS_FR[parseInt(dateStr.split('-')[1]) - 1]; }
-function dayNum(d) { return parseInt(d.split('-')[2]); }
-function dayName(d) { return DAYS[new Date(d + 'T00:00:00').getDay()]; }
-function daysUntil(d) {
-  const today = new Date(); today.setHours(0,0,0,0);
-  return Math.round((new Date(d + 'T00:00:00') - today) / 86400000);
-}
-function fmtDate(d) { const dt = new Date(d+'T00:00:00'); return DAYS[dt.getDay()]+' '+dt.getDate()+' '+MONTHS_FR[dt.getMonth()]; }
+let currentTab = 'general';
+let currentAnimateur = null;
+let confirmCallback = null;
 
-function animColor(name) {
-  const n = name.replace(/\s*\?$/,'').trim();
-  return ANIMATEURS[n] || ANIMATEURS['?'];
+// HELPERS
+function getMonth(d) { return MONTHS_FR[parseInt(d.split('-')[1])-1]; }
+function dayNum(d) { return parseInt(d.split('-')[2]); }
+function dayName(d) { return DAYS[new Date(d+'T00:00:00').getDay()]; }
+function daysUntil(d) { const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/86400000); }
+function fmtDate(d) { const dt=new Date(d+'T00:00:00');return DAYS[dt.getDay()]+' '+dt.getDate()+' '+MONTHS_FR[dt.getMonth()]; }
+function getColor(name) {
+  const a = ANIMATEURS.find(a=>a.name===name);
+  return a ? a.color : {dot:'#888780',bg:'#f1efe8',text:'#444441'};
+}
+function initials(name) {
+  if(!name||name==='?') return '?';
+  const parts = name.trim().split(' ');
+  return parts.length>=2 ? (parts[0][0]+parts[1][0]).toUpperCase() : name.substring(0,2).toUpperCase();
+}
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// SIDEBAR
+function buildSidebar() {
+  const nav = document.getElementById('animateurs-nav');
+  nav.innerHTML = ANIMATEURS.map(a => `
+    <a class="nav-item${currentTab==='anim-'+a.name?' active':''}" onclick="showAnimateur('${a.name}',this)">
+      <div class="nav-avatar" style="background:${a.color.bg};color:${a.color.dot};">${initials(a.name)}</div>
+      ${a.name}
+    </a>
+  `).join('');
 }
 
 // VIEW SWITCHING
 function showView(id, el) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  if (el) el.classList.add('active');
-
+  currentTab = id;
+  currentAnimateur = null;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  if(el) el.classList.add('active');
   const titles = {
-    'general': ['Planning général', 'Toutes les animations · Été 2026'],
-    'rappels': ['Rappels', 'Animations à venir et créneaux à confirmer'],
+    general: ['Planning général','Toutes les animations · Été 2026'],
+    rappels: ['Rappels','Animations à venir et créneaux à confirmer'],
+    admin: ['Administration','Gérer les animateurs et les animations'],
   };
-  if (titles[id]) {
-    document.getElementById('topbar-title').textContent = titles[id][0];
-    document.getElementById('topbar-sub').textContent = titles[id][1];
-  } else if (id.startsWith('anim-')) {
-    const name = id.replace('anim-', '');
-    document.getElementById('topbar-title').textContent = name;
-    document.getElementById('topbar-sub').textContent = 'Planning personnel · Été 2026';
-    renderAnimateur(name);
+  if(titles[id]) {
+    document.getElementById('topbar-title').textContent=titles[id][0];
+    document.getElementById('topbar-sub').textContent=titles[id][1];
   }
-  if (id === 'rappels') renderRappels();
-  if (id === 'general') renderGeneral();
+  if(id==='general') renderGeneral();
+  if(id==='rappels') renderRappels();
+  if(id==='admin') renderAdmin();
+}
+
+function showAnimateur(name, el) {
+  currentTab='anim-'+name;
+  currentAnimateur=name;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('view-animateur').classList.add('active');
+  if(el) el.classList.add('active');
+  document.getElementById('topbar-title').textContent=name;
+  document.getElementById('topbar-sub').textContent='Planning personnel · Été 2026';
+  renderAnimateur(name);
 }
 
 // GENERAL
 function renderGeneral() {
-  const counts = {};
-  Object.keys(ANIMATEURS).forEach(k => { if(k!=='?') counts[k]=0; });
-  DATA.forEach(d => { const n = d.animateur.replace(/\s*\?$/,'').trim(); if(counts[n]!==undefined) counts[n]++; });
+  const counts={};
+  ANIMATEURS.forEach(a=>counts[a.name]=0);
+  DATA.forEach(d=>{if(counts[d.animateur]!==undefined)counts[d.animateur]++;});
+  const monthGroups={'Juin':[],'Juillet':[],'Août':[]};
+  DATA.forEach(d=>{const m=getMonth(d.date);if(monthGroups[m])monthGroups[m].push(d);});
 
-  const statsEl = document.getElementById('stats-row');
-  statsEl.innerHTML = `
+  let html=`<div class="stats-row">
     <div class="stat-card"><div class="stat-val">${DATA.length}</div><div class="stat-lbl">Animations total</div></div>
-    ${Object.entries(counts).map(([k,v]) => {
-      const c = animColor(k);
-      return `<div class="stat-card" style="border-left:3px solid ${c.color}">
-        <div class="stat-val">${v}</div>
-        <div class="stat-lbl" style="display:flex;align-items:center;gap:5px;color:${c.color}"><span style="width:7px;height:7px;border-radius:50%;background:${c.color};display:inline-block;"></span>${k}</div>
-      </div>`;
-    }).join('')}
+    ${ANIMATEURS.map(a=>`<div class="stat-card" style="border-left:3px solid ${a.color.dot}">
+      <div class="stat-val">${counts[a.name]||0}</div>
+      <div class="stat-lbl" style="display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:${a.color.dot};display:inline-block;"></span>${a.name}</div>
+    </div>`).join('')}
     <div class="stat-card" style="border-left:3px solid #e24b4a">
       <div class="stat-val">${DATA.filter(d=>!d.confirmed||d.animateur==='?').length}</div>
-      <div class="stat-lbl" style="color:#993c1d;">À confirmer</div>
+      <div class="stat-lbl" style="color:var(--danger);">À confirmer</div>
     </div>
-  `;
+  </div>`;
 
-  const monthGroups = { 'Juin': [], 'Juillet': [], 'Août': [] };
-  DATA.forEach(d => {
-    const m = getMonth(d.date);
-    if (monthGroups[m]) monthGroups[m].push(d);
-  });
-
-  let html = '';
-  Object.entries(monthGroups).forEach(([month, items]) => {
-    items.sort((a,b) => a.date.localeCompare(b.date));
-    html += `<div class="planning-wrap">
+  Object.entries(monthGroups).forEach(([month,items])=>{
+    items.sort((a,b)=>a.date.localeCompare(b.date));
+    html+=`<div class="planning-wrap">
       <div class="planning-month-header">${month} <span>${items.length} animation${items.length>1?'s':''}</span></div>
-      <table class="plan">
-        <thead><tr>
-          <th>Date</th><th>Lieu</th><th>Animateur</th><th>Plage horaire</th><th>Créneau</th><th>Statut</th>
-        </tr></thead>
-        <tbody>`;
-    if (!items.length) {
-      html += '<tr class="empty-row"><td colspan="6">Aucune animation ce mois</td></tr>';
+      <table class="plan"><thead><tr><th>Date</th><th>Lieu</th><th>Animateur</th><th>Plage horaire</th><th>Créneau</th><th>Statut</th><th></th></tr></thead><tbody>`;
+    if(!items.length){
+      html+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:18px;font-size:12px;">Aucune animation ce mois</td></tr>';
     } else {
-      items.forEach(d => {
-        const c = animColor(d.animateur);
-        const diff = daysUntil(d.date);
-        let reminder = '';
-        if (diff >= 0 && diff <= 1) reminder = '<span class="reminder-j1" style="margin-left:6px;">J-1</span>';
-        else if (diff >= 0 && diff <= 7) reminder = '<span class="reminder-j7" style="margin-left:6px;">J-7</span>';
-        html += `<tr>
-          <td class="date-cell"><div class="date-num">${dayNum(d.date)}</div><div class="date-day">${dayName(d.date)}</div></td>
-          <td><strong>${d.lieu}</strong>${d.note ? '<br><span class="confirm-tag" style="margin-top:3px;display:inline-block;">⚠ '+d.note+'</span>' : ''}${reminder}</td>
-          <td>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div style="width:28px;height:28px;border-radius:50%;background:${c.bg};color:${c.color};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">${c.initials}</div>
-              ${d.animateur}
-            </div>
-          </td>
-          <td>${d.format ? '<span class="format-tag">'+d.format+'</span>' : '<span style="color:var(--text-faint);font-size:12px;">—</span>'}</td>
+      items.forEach((d,_)=>{
+        const idx=DATA.indexOf(d);
+        const c=getColor(d.animateur);
+        const diff=daysUntil(d.date);
+        let rem='';
+        if(diff>=0&&diff<=1) rem='<span class="reminder-j1" style="margin-left:6px;">J-1</span>';
+        else if(diff>=0&&diff<=7) rem='<span class="reminder-j7" style="margin-left:6px;">J-7</span>';
+        html+=`<tr>
+          <td><div class="date-num">${dayNum(d.date)}</div><div class="date-day">${dayName(d.date)}</div></td>
+          <td><strong>${d.lieu}</strong>${d.note?'<br><span class="confirm-tag" style="margin-top:3px;display:inline-block;">⚠ '+d.note+'</span>':''}${rem}</td>
+          <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:50%;background:${c.bg};color:${c.dot};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">${initials(d.animateur)}</div>${d.animateur}</div></td>
+          <td>${d.format?'<span class="format-tag">'+d.format+'</span>':'<span style="color:var(--text-faint);font-size:12px;">—</span>'}</td>
           <td><span class="slot-badge ${d.slot==='Anim 1'?'slot-1':'slot-2'}">${d.slot}</span></td>
-          <td>${!d.confirmed || d.animateur==='?' ? '<span class="tbd-tag">À confirmer</span>' : '<span style="font-size:12px;color:var(--accent);">✓ Confirmé</span>'}</td>
+          <td>${!d.confirmed||d.animateur==='?'?'<span class="tbd-tag">À décerner</span>':'<span style="font-size:12px;color:var(--accent);">✓ Confirmé</span>'}</td>
+          <td><button class="btn btn-secondary btn-sm" onclick="editEvent(${idx})" style="padding:4px 8px;font-size:11px;">✏️</button></td>
         </tr>`;
       });
     }
-    html += '</tbody></table></div>';
+    html+='</tbody></table></div>';
   });
-  document.getElementById('general-tables').innerHTML = html;
+  document.getElementById('view-general').innerHTML=html;
 }
 
 // RAPPELS
 function renderRappels() {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const soon = DATA.filter(d => { const diff = daysUntil(d.date); return diff >= 0 && diff <= 14; })
-    .sort((a,b) => a.date.localeCompare(b.date));
-  const tbd = DATA.filter(d => d.animateur === '?' || !d.confirmed)
-    .sort((a,b) => a.date.localeCompare(b.date));
+  const soon=DATA.filter(d=>{const diff=daysUntil(d.date);return diff>=0&&diff<=14;}).sort((a,b)=>a.date.localeCompare(b.date));
+  const tbd=DATA.filter(d=>d.animateur==='?'||!d.confirmed).sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById('alert-dot').style.display=(soon.length+tbd.length)>0?'inline-block':'none';
 
-  document.getElementById('alert-dot').style.display = (soon.length + tbd.length) > 0 ? 'inline-block' : 'none';
-
-  let html = '';
-  html += `<div class="rappels-section">
-    <div class="rappels-heading">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      Prochaines animations (14 jours)
-      <span style="font-size:12px;font-weight:400;color:var(--text-muted);">${soon.length} animation${soon.length>1?'s':''}</span>
-    </div>`;
-  if (!soon.length) {
-    html += '<div style="font-size:13px;color:var(--text-muted);padding:16px;background:var(--white);border:1px solid var(--border);border-radius:8px;">Aucune animation dans les 14 prochains jours.</div>';
+  let html=`<div class="rappels-section">
+    <div class="rappels-heading">🔔 Prochaines animations (14 jours) <span style="font-size:12px;font-weight:400;color:var(--text-muted);">${soon.length} animation${soon.length>1?'s':''}</span></div>`;
+  if(!soon.length){
+    html+='<div style="font-size:13px;color:var(--text-muted);padding:16px;background:var(--white);border:1px solid var(--border);border-radius:8px;">Aucune animation dans les 14 prochains jours.</div>';
   } else {
-    soon.forEach(d => {
-      const diff = daysUntil(d.date);
-      const c = animColor(d.animateur);
-      let badge = '';
-      if (diff <= 1) badge = '<span class="reminder-j1">J-'+diff+'</span>';
-      else if (diff <= 7) badge = '<span class="reminder-j7">J-'+diff+'</span>';
-      else badge = '<span style="background:#e8f0eb;color:var(--accent);font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;">J-'+diff+'</span>';
-      html += `<div class="rappel-row">
-        ${badge}
-        <div class="rappel-info">
-          <div class="rappel-lieu">${d.lieu}</div>
-          <div class="rappel-who">
-            <span style="width:7px;height:7px;border-radius:50%;background:${c.color};display:inline-block;"></span>
-            ${d.animateur}
-          </div>
-        </div>
-        <div class="rappel-date">${fmtDate(d.date)}</div>
-      </div>`;
+    soon.forEach(d=>{
+      const diff=daysUntil(d.date);
+      const c=getColor(d.animateur);
+      let badge=diff<=1?'<span class="reminder-j1">J-'+diff+'</span>':diff<=7?'<span class="reminder-j7">J-'+diff+'</span>':'<span style="background:#e8f0eb;color:var(--accent);font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;">J-'+diff+'</span>';
+      html+=`<div class="rappel-row">${badge}<div class="rappel-info"><div class="rappel-lieu">${d.lieu}</div><div class="rappel-who"><span style="width:7px;height:7px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${d.animateur}</div></div><div class="rappel-date">${fmtDate(d.date)}</div></div>`;
     });
   }
-  html += '</div>';
-
-  html += `<div class="rappels-section">
-    <div class="rappels-heading" style="color:#993c1d;">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Créneaux à confirmer
-      <span style="font-size:12px;font-weight:400;color:var(--text-muted);">${tbd.length} animation${tbd.length>1?'s':''}</span>
-    </div>`;
-  tbd.forEach(d => {
-    html += `<div class="rappel-row" style="border-left:3px solid #f09595;">
-      <span class="tbd-tag">À confirmer</span>
-      <div class="rappel-info">
-        <div class="rappel-lieu">${d.lieu}${d.note ? ' — <em style="font-size:12px;">'+d.note+'</em>' : ''}</div>
-        <div class="rappel-who" style="color:#ba7517;">${d.animateur}</div>
-      </div>
+  html+=`</div><div class="rappels-section">
+    <div class="rappels-heading" style="color:var(--danger);">⚠️ À décerner <span style="font-size:12px;font-weight:400;color:var(--text-muted);">${tbd.length} animation${tbd.length>1?'s':''}</span></div>`;
+  tbd.forEach(d=>{
+    html+=`<div class="rappel-row" style="border-left:3px solid #f09595;">
+      <span class="tbd-tag">À décerner</span>
+      <div class="rappel-info"><div class="rappel-lieu">${d.lieu}${d.note?' — <em style="font-size:12px;">'+d.note+'</em>':''}</div><div class="rappel-who" style="color:var(--warning);">${d.animateur}</div></div>
       <div class="rappel-date">${fmtDate(d.date)}</div>
     </div>`;
   });
-  html += '</div>';
-  document.getElementById('rappels-content').innerHTML = html;
+  html+='</div>';
+  document.getElementById('view-rappels').innerHTML=html;
 }
 
 // ANIMATEUR
 function renderAnimateur(name) {
-  const myData = DATA.filter(d => d.animateur.replace(/\s*\?$/,'').trim() === name)
-    .sort((a,b) => a.date.localeCompare(b.date));
-  const c = animColor(name);
-  const months = ['Juin','Juillet','Août'];
+  const myData=DATA.filter(d=>d.animateur===name).sort((a,b)=>a.date.localeCompare(b.date));
+  const c=getColor(name);
+  const months=['Juin','Juillet','Août'];
 
-  let html = `<div class="animateur-hero">
-    <div class="animateur-avatar-big" style="background:${c.bg};color:${c.color};">${c.initials}</div>
+  let html=`<div class="animateur-hero">
+    <div class="animateur-avatar-big" style="background:${c.bg};color:${c.dot};">${initials(name)}</div>
     <div>
       <div class="animateur-name">${name}</div>
       <div class="animateur-meta">Animateur · Maison NOA Été 2026</div>
@@ -764,83 +489,259 @@ function renderAnimateur(name) {
     </div>
   </div>`;
 
-  months.forEach(m => {
-    const mData = myData.filter(d => getMonth(d.date) === m);
-    html += `<div class="month-block">
-      <div class="month-title">${m} <span class="month-count">${mData.length} animation${mData.length!==1?'s':''}</span></div>`;
-    if (!mData.length) {
-      html += `<div class="no-anim-month">Aucune animation en ${m}</div>`;
+  months.forEach(m=>{
+    const mData=myData.filter(d=>getMonth(d.date)===m);
+    html+=`<div class="month-block"><div class="month-title">${m} <span class="month-count">${mData.length} animation${mData.length!==1?'s':''}</span></div>`;
+    if(!mData.length){
+      html+=`<div class="no-anim-month">Aucune animation en ${m}</div>`;
     } else {
-      mData.forEach(d => {
-        const diff = daysUntil(d.date);
-        let rem = '';
-        if (diff >= 0 && diff <= 1) rem = '<span class="reminder-j1">J-1</span>';
-        else if (diff >= 0 && diff <= 7) rem = '<span class="reminder-j7">J-7</span>';
-        html += `<div class="anim-card">
-          <div class="card-date">
-            <div class="card-date-num">${dayNum(d.date)}</div>
-            <div class="card-date-day">${dayName(d.date)}</div>
-          </div>
+      mData.forEach(d=>{
+        const idx=DATA.indexOf(d);
+        const diff=daysUntil(d.date);
+        let rem='';
+        if(diff>=0&&diff<=1) rem='<span class="reminder-j1">J-1</span>';
+        else if(diff>=0&&diff<=7) rem='<span class="reminder-j7">J-7</span>';
+        html+=`<div class="anim-card">
+          <div class="card-date"><div class="card-date-num">${dayNum(d.date)}</div><div class="card-date-day">${dayName(d.date)}</div></div>
           <div class="card-body">
             <div class="card-lieu">${d.lieu}</div>
             <div class="card-meta">
               <span class="slot-badge ${d.slot==='Anim 1'?'slot-1':'slot-2'}">${d.slot}</span>
-              ${d.format ? '<span class="format-tag">'+d.format+'</span>' : ''}
-              ${!d.confirmed ? '<span class="tbd-tag">À confirmer</span>' : '<span style="font-size:11px;color:var(--accent);font-weight:500;">✓ Confirmé</span>'}
-              ${d.note ? '<span class="confirm-tag">⚠ '+d.note+'</span>' : ''}
+              ${d.format?'<span class="format-tag">'+d.format+'</span>':''}
+              ${!d.confirmed?'<span class="tbd-tag">À confirmer</span>':'<span style="font-size:11px;color:var(--accent);font-weight:500;">✓ Confirmé</span>'}
+              ${d.note?'<span class="confirm-tag">⚠ '+d.note+'</span>':''}
               ${rem}
             </div>
           </div>
+          <button class="btn btn-secondary btn-sm" onclick="editEvent(${idx})" style="padding:4px 8px;font-size:11px;flex-shrink:0;">✏️</button>
         </div>`;
       });
     }
-    html += `<button class="btn-add" onclick="openModal('${name}','${m}')" style="margin-top:8px;width:100%;justify-content:center;border-radius:8px;background:transparent;color:var(--accent);border:1px dashed var(--accent-mid);font-size:13px;">
-      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Ajouter une animation en ${m}
-    </button>`;
-    html += '</div>';
+    html+=`<button class="btn btn-secondary" onclick="openModalForAnimateur('${name}','${m}')" style="margin-top:8px;width:100%;justify-content:center;border-style:dashed;font-size:13px;">+ Ajouter une animation en ${m}</button>`;
+    html+='</div>';
+  });
+  document.getElementById('view-animateur').innerHTML=html;
+}
+
+// ADMIN
+function renderAdmin() {
+  let html=`<div class="admin-section">
+    <div class="admin-section-title">
+      Animateurs
+      <button class="btn btn-primary btn-sm" onclick="openModal('profil')">+ Ajouter un animateur</button>
+    </div>
+    <div class="admin-grid">`;
+
+  ANIMATEURS.forEach((a,i)=>{
+    const count=DATA.filter(d=>d.animateur===a.name).length;
+    html+=`<div class="admin-profile-card">
+      <div class="nav-avatar" style="width:40px;height:40px;font-size:14px;background:${a.color.bg};color:${a.color.dot};">${initials(a.name)}</div>
+      <div class="admin-profile-info">
+        <div class="admin-profile-name">${a.name}</div>
+        <div class="admin-profile-count">${count} animation${count>1?'s':''}</div>
+      </div>
+      <div class="admin-profile-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editProfil(${i})" title="Modifier">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDeleteAnimateur(${i})" title="Supprimer">🗑</button>
+      </div>
+    </div>`;
   });
 
-  document.getElementById('view-anim-' + name).innerHTML = html;
+  html+=`</div></div>
+  <div class="admin-section">
+    <div class="admin-section-title">
+      Animations <span style="font-size:13px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--text-muted);">${DATA.length} au total</span>
+      <button class="btn btn-primary btn-sm" onclick="openModal('event')">+ Ajouter</button>
+    </div>`;
+
+  const sorted=[...DATA].sort((a,b)=>a.date.localeCompare(b.date));
+  sorted.forEach(d=>{
+    const idx=DATA.indexOf(d);
+    const c=getColor(d.animateur);
+    html+=`<div class="admin-event-row">
+      <div style="min-width:44px;text-align:center;">
+        <div style="font-size:18px;font-weight:600;">${dayNum(d.date)}</div>
+        <div style="font-size:10px;color:var(--text-muted);">${dayName(d.date)} ${getMonth(d.date).substring(0,3)}.</div>
+      </div>
+      <div class="admin-event-info">
+        <div class="admin-event-lieu">${d.lieu}</div>
+        <div class="admin-event-meta">
+          <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${d.animateur}</span>
+          <span class="slot-badge ${d.slot==='Anim 1'?'slot-1':'slot-2'}">${d.slot}</span>
+          ${d.format?'<span class="format-tag">'+d.format+'</span>':''}
+          ${!d.confirmed||d.animateur==='?'?'<span class="tbd-tag">À décerner</span>':'<span style="font-size:11px;color:var(--accent);">✓</span>'}
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        <button class="btn btn-secondary btn-sm" onclick="editEvent(${idx})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmDeleteEvent(${idx})">🗑</button>
+      </div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('view-admin').innerHTML=html;
 }
 
-// MODAL
-function openModal(animateur, month) {
-  if (animateur) document.getElementById('f-animateur').value = animateur;
-  if (month) {
-    const map = {Juin:'2026-06-01',Juillet:'2026-07-01',Août:'2026-08-01'};
-    if (map[month]) document.getElementById('f-date').value = map[month];
+// MODAL ÉVÉNEMENT
+function buildAnimateurSelect(selected) {
+  const sel=document.getElementById('f-animateur');
+  sel.innerHTML=`<option value="?">— À décerner —</option>`+ANIMATEURS.map(a=>`<option value="${a.name}"${a.name===selected?' selected':''}>${a.name}</option>`).join('');
+  if(selected) sel.value=selected;
+}
+
+function openModal(type) {
+  if(type==='event') {
+    document.getElementById('modal-event-title').textContent='Ajouter une animation';
+    document.getElementById('f-event-idx').value='-1';
+    document.getElementById('f-date').value='';
+    document.getElementById('f-lieu').value='';
+    document.getElementById('f-format').value='';
+    document.getElementById('f-slot').value='Anim 1';
+    document.getElementById('f-confirmed').value='1';
+    buildAnimateurSelect('');
+  } else {
+    document.getElementById('modal-profil-title').textContent='Ajouter un animateur';
+    document.getElementById('f-profil-old-name').value='';
+    document.getElementById('f-profil-name').value='';
+    buildColorPicker(COLOR_PALETTE[0].name);
   }
-  document.getElementById('modal-overlay').classList.add('open');
-}
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  ['f-date','f-lieu','f-format'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('f-animateur').value='';
-  document.getElementById('f-slot').value='Anim 1';
-  document.getElementById('f-confirmed').value='1';
-}
-function saveAnim() {
-  const date = document.getElementById('f-date').value;
-  const lieu = document.getElementById('f-lieu').value.trim();
-  const animateur = document.getElementById('f-animateur').value;
-  const format = document.getElementById('f-format').value.trim();
-  const slot = document.getElementById('f-slot').value;
-  const confirmed = document.getElementById('f-confirmed').value === '1';
-  if (!date || !lieu || !animateur) { alert('Merci de remplir la date, le lieu et l\'animateur.'); return; }
-  DATA.push({date, lieu, animateur, format, slot, confirmed});
-  closeModal();
-  renderGeneral();
-  renderRappels();
-  const activeView = document.querySelector('.view.active');
-  if (activeView && activeView.id.startsWith('view-anim-')) renderAnimateur(activeView.id.replace('view-anim-',''));
+  document.getElementById('modal-'+type).classList.add('open');
 }
 
-document.getElementById('modal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
+function openModalForAnimateur(name, month) {
+  openModal('event');
+  buildAnimateurSelect(name);
+  const map={Juin:'2026-06-01',Juillet:'2026-07-01',Août:'2026-08-01'};
+  if(map[month]) document.getElementById('f-date').value=map[month];
+}
+
+function editEvent(idx) {
+  const d=DATA[idx];
+  document.getElementById('modal-event-title').textContent='Modifier l\'animation';
+  document.getElementById('f-event-idx').value=idx;
+  document.getElementById('f-date').value=d.date;
+  document.getElementById('f-lieu').value=d.lieu;
+  document.getElementById('f-format').value=d.format||'';
+  document.getElementById('f-slot').value=d.slot;
+  document.getElementById('f-confirmed').value=d.confirmed?'1':'0';
+  buildAnimateurSelect(d.animateur);
+  document.getElementById('modal-event').classList.add('open');
+}
+
+function closeModal(type) { document.getElementById('modal-'+type).classList.remove('open'); }
+
+function saveEvent() {
+  const idx=parseInt(document.getElementById('f-event-idx').value);
+  const date=document.getElementById('f-date').value;
+  const lieu=document.getElementById('f-lieu').value.trim();
+  const animateur=document.getElementById('f-animateur').value;
+  const format=document.getElementById('f-format').value.trim();
+  const slot=document.getElementById('f-slot').value;
+  const confirmed=document.getElementById('f-confirmed').value==='1';
+  if(!date||!lieu) { alert('Merci de remplir la date et le lieu.'); return; }
+  if(idx===-1) {
+    DATA.push({date,lieu,animateur:animateur||'?',format,slot,confirmed});
+    showToast('Animation ajoutée ✓');
+  } else {
+    DATA[idx]={...DATA[idx],date,lieu,animateur:animateur||'?',format,slot,confirmed};
+    showToast('Animation modifiée ✓');
+  }
+  closeModal('event');
+  refreshCurrentView();
+}
+
+// MODAL PROFIL
+function buildColorPicker(selectedName) {
+  const cp=document.getElementById('color-picker');
+  cp.innerHTML=COLOR_PALETTE.map(c=>`
+    <div class="color-opt${c.name===selectedName?' selected':''}" style="background:${c.dot};" onclick="selectColor('${c.name}')" title="${c.name}"></div>
+  `).join('');
+  document.getElementById('f-profil-color').value=selectedName;
+}
+
+function selectColor(name) {
+  document.querySelectorAll('.color-opt').forEach(o=>o.classList.remove('selected'));
+  event.target.classList.add('selected');
+  document.getElementById('f-profil-color').value=name;
+}
+
+function editProfil(i) {
+  const a=ANIMATEURS[i];
+  document.getElementById('modal-profil-title').textContent='Modifier l\'animateur';
+  document.getElementById('f-profil-old-name').value=a.name;
+  document.getElementById('f-profil-name').value=a.name;
+  buildColorPicker(a.color.name);
+  document.getElementById('modal-profil').classList.add('open');
+}
+
+function saveProfil() {
+  const oldName=document.getElementById('f-profil-old-name').value;
+  const name=document.getElementById('f-profil-name').value.trim();
+  const colorName=document.getElementById('f-profil-color').value;
+  const color=COLOR_PALETTE.find(c=>c.name===colorName)||COLOR_PALETTE[0];
+  if(!name) { alert('Merci de saisir un prénom.'); return; }
+  if(oldName) {
+    const idx=ANIMATEURS.findIndex(a=>a.name===oldName);
+    ANIMATEURS[idx]={name,color};
+    DATA.forEach(d=>{ if(d.animateur===oldName) d.animateur=name; });
+    showToast('Animateur modifié ✓');
+  } else {
+    if(ANIMATEURS.find(a=>a.name===name)) { alert('Ce nom existe déjà.'); return; }
+    ANIMATEURS.push({name,color});
+    showToast('Animateur ajouté ✓');
+  }
+  closeModal('profil');
+  buildSidebar();
+  refreshCurrentView();
+}
+
+// SUPPRESSION
+function confirmDeleteAnimateur(i) {
+  const a=ANIMATEURS[i];
+  const count=DATA.filter(d=>d.animateur===a.name).length;
+  document.getElementById('confirm-title').textContent='Supprimer '+a.name+' ?';
+  document.getElementById('confirm-text').innerHTML=`Vous allez supprimer <strong>${a.name}</strong> de la liste des animateurs.<br><br>${count>0?`<span style="color:var(--warning);">⚠️ ${count} animation${count>1?'s':''} lui étai${count>1?'ent':'t'} attribuée${count>1?'s':''} — ${count>1?'elles seront':'elle sera'} passée${count>1?'s':''} en mode <strong>« À décerner »</strong>.</span>`:'Cet animateur n\'a aucune animation attribuée.'}`;
+  document.getElementById('confirm-ok-btn').onclick=()=>deleteAnimateur(i);
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+
+function confirmDeleteEvent(idx) {
+  const d=DATA[idx];
+  document.getElementById('confirm-title').textContent='Supprimer cette animation ?';
+  document.getElementById('confirm-text').innerHTML=`Vous allez supprimer l'animation :<br><br><strong>${d.lieu}</strong><br>${fmtDate(d.date)}`;
+  document.getElementById('confirm-ok-btn').onclick=()=>deleteEvent(idx);
+  document.getElementById('confirm-overlay').classList.add('open');
+}
+
+function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); }
+
+function deleteAnimateur(i) {
+  const name=ANIMATEURS[i].name;
+  DATA.forEach(d=>{ if(d.animateur===name){ d.animateur='?'; d.confirmed=false; } });
+  ANIMATEURS.splice(i,1);
+  closeConfirm();
+  buildSidebar();
+  if(currentTab==='anim-'+name) showView('general',document.querySelector('.nav-item'));
+  else refreshCurrentView();
+  showToast('Animateur supprimé — animations passées en « À décerner »');
+}
+
+function deleteEvent(idx) {
+  DATA.splice(idx,1);
+  closeConfirm();
+  refreshCurrentView();
+  showToast('Animation supprimée ✓');
+}
+
+function refreshCurrentView() {
+  if(currentTab==='general') renderGeneral();
+  else if(currentTab==='rappels') renderRappels();
+  else if(currentTab==='admin') renderAdmin();
+  else if(currentAnimateur) renderAnimateur(currentAnimateur);
+}
 
 // INIT
+buildSidebar();
 renderGeneral();
 renderRappels();
 </script>
