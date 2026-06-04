@@ -454,6 +454,11 @@ function launchConfetti(){
 // LOGIN
 function showLoginScreen(){
   const grid=document.getElementById('login-grid');
+  if(ANIMATEURS.length===0){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);font-size:13px;padding:20px;">Chargement...</div>';
+    document.getElementById('login-screen').classList.remove('hidden');
+    return;
+  }
   grid.innerHTML=ANIMATEURS.map(a=>`
     <div class="login-card" onclick="selectUser('${a.name}')">
       <div class="login-avatar" style="background:${a.color_bg};color:${a.color_dot};">${initials(a.name)}</div>
@@ -864,8 +869,11 @@ async function init(){
     ANIMATEURS=anims;DATA=events;
     buildDrawer();renderGeneral();renderRappels();
     const saved=localStorage.getItem('noa_user');
-    if(saved&&ANIMATEURS.find(a=>a.name===saved)){currentUser=saved;updateUserBadge();checkUrlParams();requestNotifPermission();}
-    else showLoginScreen();
+    if(saved&&ANIMATEURS.find(a=>a.name===saved)){
+      currentUser=saved;updateUserBadge();checkUrlParams();requestNotifPermission();
+    } else {
+      showLoginScreen();
+    }
   }catch(e){
     document.getElementById('view-general').innerHTML='<div class="empty-box" style="margin-top:20px;">❌ Erreur de connexion.<br><small>'+e.message+'</small></div>';
   }
