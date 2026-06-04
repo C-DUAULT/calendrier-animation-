@@ -169,7 +169,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 /* TOAST */
 .toast{position:fixed;bottom:calc(72px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(12px);background:var(--text);color:white;padding:10px 20px;border-radius:20px;font-size:13px;z-index:700;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.powered{position:fixed;bottom:calc(68px + env(safe-area-inset-bottom));right:12px;font-size:9px;color:var(--text-faint);opacity:0.45;letter-spacing:0.03em;pointer-events:none;}
+.powered{position:fixed;bottom:calc(68px + env(safe-area-inset-bottom));right:12px;font-size:11px;color:var(--text-muted);opacity:0.75;letter-spacing:0.04em;pointer-events:none;font-style:italic;}
 .spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
@@ -253,7 +253,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="drawer-footer">
     Maison NOA © 2026
-    <div style="margin-top:6px;font-size:10px;color:var(--text-faint);opacity:0.6;">Powered by JS north'king</div>
+    <div style="margin-top:6px;font-size:10px;color:var(--text-faint);opacity:0.6;font-style:italic;">POWERED by Clément DUAULT the north's king</div>
   </div>
 </nav>
 
@@ -334,7 +334,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 </div>
 
-<div class="powered">Powered by JS north'king</div>
+<div class="powered">POWERED by Clément DUAULT the north's king</div>
 
 <div class="toast" id="toast"></div>
 
