@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Planning NOA — Été 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -23,195 +23,218 @@
   --warning: #854f0b;
   --warning-bg: #faeeda;
 }
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 
-/* SIDEBAR */
-.sidebar { width: 240px; min-height: 100vh; background: var(--white); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; overflow-y: auto; }
-.sidebar-brand { padding: 28px 24px 20px; border-bottom: 1px solid var(--border-light); }
-.brand-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-mid); margin-bottom: 6px; }
-.brand-name { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--text); line-height: 1.1; }
-.brand-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-.sidebar-section { padding: 16px 0; }
-.sidebar-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); padding: 0 24px; margin-bottom: 6px; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 24px; cursor: pointer; font-size: 14px; color: var(--text-muted); transition: all 0.15s; border-left: 3px solid transparent; text-decoration: none; }
-.nav-item:hover { background: var(--bg); color: var(--text); }
-.nav-item.active { color: var(--text); background: var(--bg); border-left-color: var(--accent); font-weight: 500; }
-.nav-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
-.alert-dot { width: 6px; height: 6px; border-radius: 50%; background: #e24b4a; margin-left: auto; flex-shrink: 0; }
-.sidebar-footer { margin-top: auto; padding: 16px 24px; border-top: 1px solid var(--border-light); font-size: 12px; color: var(--text-faint); }
+/* TOPBAR MOBILE */
+.topbar {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  background:var(--white); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 16px; height:56px;
+}
+.topbar-left { display:flex; align-items:center; gap:12px; }
+.hamburger { width:40px; height:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; cursor:pointer; border:none; background:none; border-radius:8px; }
+.hamburger span { display:block; width:20px; height:2px; background:var(--text); border-radius:2px; transition:all 0.25s; }
+.hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+.topbar-brand { font-family:'DM Serif Display',serif; font-size:18px; }
+.topbar-brand small { display:block; font-family:'DM Sans',sans-serif; font-size:10px; color:var(--text-muted); font-weight:400; margin-top:-2px; }
+.topbar-add { width:36px; height:36px; border-radius:50%; background:var(--accent); color:white; border:none; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 
-/* MAIN */
-.main { margin-left: 240px; flex: 1; min-height: 100vh; }
-.topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 36px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
-.topbar-title { font-size: 20px; font-weight: 500; }
-.topbar-sub { font-size: 13px; color: var(--text-muted); margin-top: 1px; }
-.topbar-actions { display: flex; gap: 8px; }
-.btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; border: 1px solid; }
-.btn-primary { background: var(--accent); color: white; border-color: var(--accent); }
-.btn-primary:hover { background: #24492f; }
-.btn-secondary { background: var(--white); color: var(--text); border-color: var(--border); }
-.btn-secondary:hover { background: var(--bg); }
-.btn-danger { background: var(--danger-bg); color: var(--danger); border-color: #f0c0a8; }
-.btn-danger:hover { background: #f5d5c5; }
-.btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
-.content { padding: 32px 36px; }
-.view { display: none; }
-.view.active { display: block; }
+/* DRAWER MENU */
+.drawer-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:300; opacity:0; pointer-events:none; transition:opacity 0.25s; }
+.drawer-overlay.open { opacity:1; pointer-events:all; }
+.drawer { position:fixed; top:0; left:0; bottom:0; width:280px; background:var(--white); z-index:400; transform:translateX(-100%); transition:transform 0.28s cubic-bezier(0.4,0,0.2,1); overflow-y:auto; display:flex; flex-direction:column; }
+.drawer.open { transform:translateX(0); }
+.drawer-brand { padding:24px 20px 16px; border-bottom:1px solid var(--border-light); }
+.brand-tag { font-size:10px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent-mid); margin-bottom:4px; }
+.brand-name { font-family:'DM Serif Display',serif; font-size:22px; line-height:1.1; }
+.brand-sub { font-size:12px; color:var(--text-muted); margin-top:3px; }
+.drawer-section { padding:12px 0; }
+.drawer-label { font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-faint); padding:0 20px; margin-bottom:4px; }
+.nav-item { display:flex; align-items:center; gap:12px; padding:12px 20px; cursor:pointer; font-size:15px; color:var(--text-muted); border-left:3px solid transparent; transition:all 0.15s; }
+.nav-item:active { background:var(--bg); }
+.nav-item.active { color:var(--text); background:var(--bg); border-left-color:var(--accent); font-weight:500; }
+.nav-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0; }
+.alert-dot { width:8px; height:8px; border-radius:50%; background:#e24b4a; margin-left:auto; flex-shrink:0; }
+.drawer-footer { margin-top:auto; padding:16px 20px; border-top:1px solid var(--border-light); font-size:12px; color:var(--text-faint); }
+
+/* CONTENT */
+.main { padding-top:56px; padding-bottom:80px; min-height:100vh; }
+.content { padding:16px; }
+.view { display:none; }
+.view.active { display:block; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  background:var(--white); border-top:1px solid var(--border);
+  display:flex; align-items:center;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bottom-nav-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px 4px 8px; cursor:pointer; color:var(--text-muted); font-size:10px; gap:4px; border:none; background:none; font-family:'DM Sans',sans-serif; transition:color 0.15s; position:relative; }
+.bottom-nav-item.active { color:var(--accent); }
+.bottom-nav-item svg { transition:transform 0.15s; }
+.bottom-nav-item.active svg { transform:scale(1.15); }
+.bnav-dot { position:absolute; top:8px; right:calc(50% - 14px); width:7px; height:7px; border-radius:50%; background:#e24b4a; }
 
 /* STATS */
-.stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 28px; }
-.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
-.stat-val { font-size: 28px; font-weight: 600; line-height: 1; }
-.stat-lbl { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.stats-scroll { display:flex; gap:10px; overflow-x:auto; padding-bottom:4px; margin-bottom:16px; scrollbar-width:none; }
+.stats-scroll::-webkit-scrollbar { display:none; }
+.stat-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:14px 16px; flex-shrink:0; min-width:110px; }
+.stat-val { font-size:26px; font-weight:600; line-height:1; }
+.stat-lbl { font-size:11px; color:var(--text-muted); margin-top:3px; }
 
-/* TABLES */
-.planning-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
-.planning-month-header { padding: 14px 20px; background: var(--accent); color: white; font-family: 'DM Serif Display', serif; font-size: 18px; display: flex; align-items: center; justify-content: space-between; }
-.planning-month-header span { font-size: 13px; font-family: 'DM Sans', sans-serif; opacity: 0.8; }
-table.plan { width: 100%; border-collapse: collapse; font-size: 13px; }
-table.plan thead th { padding: 10px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-light); text-align: left; background: var(--surface); }
-table.plan tbody tr { border-bottom: 1px solid var(--border-light); transition: background 0.1s; }
-table.plan tbody tr:last-child { border-bottom: none; }
-table.plan tbody tr:hover { background: var(--bg); }
-table.plan tbody td { padding: 11px 14px; vertical-align: middle; }
-.date-num { font-size: 20px; font-weight: 600; line-height: 1; }
-.date-day { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-.slot-badge { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
-.slot-1 { background: #e8f0fb; color: #1a4a8a; }
-.slot-2 { background: #eaf4e2; color: #3a6e18; }
-.tbd-tag { font-size: 11px; color: var(--warning); background: var(--warning-bg); padding: 2px 8px; border-radius: 6px; font-weight: 500; }
-.confirm-tag { font-size: 11px; color: var(--danger); background: var(--danger-bg); padding: 2px 8px; border-radius: 6px; }
-.format-tag { display: inline-block; background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 6px; }
+/* MONTH SECTION */
+.month-header { display:flex; align-items:center; justify-content:space-between; margin:20px 0 10px; }
+.month-title-txt { font-family:'DM Serif Display',serif; font-size:20px; }
+.month-count-badge { font-size:11px; background:var(--accent-light); color:var(--accent); padding:2px 8px; border-radius:10px; font-weight:500; }
 
-/* ANIMATEUR */
-.animateur-hero { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 24px; display: flex; align-items: center; gap: 20px; }
-.animateur-avatar-big { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; flex-shrink: 0; }
-.animateur-name { font-family: 'DM Serif Display', serif; font-size: 26px; }
-.animateur-meta { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
-.animateur-stats { display: flex; gap: 20px; margin-top: 10px; }
-.animateur-stat strong { display: block; font-size: 20px; font-weight: 600; line-height: 1.1; }
-.animateur-stat { font-size: 13px; }
-.month-block { margin-bottom: 24px; }
-.month-title { font-family: 'DM Serif Display', serif; font-size: 18px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); display: flex; align-items: center; gap: 10px; }
-.month-count { font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--text-muted); }
-.anim-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 16px; transition: border-color 0.15s; }
-.anim-card:hover { border-color: var(--accent-mid); }
-.card-date { min-width: 44px; text-align: center; }
-.card-date-num { font-size: 22px; font-weight: 700; line-height: 1; }
-.card-date-day { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-.card-body { flex: 1; }
-.card-lieu { font-size: 15px; font-weight: 500; margin-bottom: 5px; }
-.card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.no-anim-month { border: 1px dashed var(--border); border-radius: 10px; padding: 18px; text-align: center; font-size: 13px; color: var(--text-faint); }
-.reminder-j1 { background: var(--danger-bg); color: var(--danger); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
-.reminder-j7 { background: var(--warning-bg); color: var(--warning); font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 5px; }
+/* EVENT CARDS */
+.event-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:8px; display:flex; gap:12px; align-items:flex-start; }
+.event-card:active { background:var(--bg); }
+.event-date { min-width:42px; text-align:center; padding-top:2px; }
+.event-date-num { font-size:22px; font-weight:700; line-height:1; }
+.event-date-day { font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; }
+.event-body { flex:1; min-width:0; }
+.event-lieu { font-size:14px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:5px; }
+.event-tags { display:flex; flex-wrap:wrap; gap:5px; align-items:center; }
+.event-actions { display:flex; gap:6px; align-items:center; flex-shrink:0; }
+
+/* TAGS */
+.tag { display:inline-block; font-size:10px; font-weight:600; padding:2px 7px; border-radius:5px; }
+.tag-slot1 { background:#e8f0fb; color:#1a4a8a; }
+.tag-slot2 { background:#eaf4e2; color:#3a6e18; }
+.tag-tbd { background:var(--warning-bg); color:var(--warning); }
+.tag-ok { background:var(--accent-light); color:var(--accent); }
+.tag-j1 { background:var(--danger-bg); color:var(--danger); }
+.tag-j7 { background:var(--warning-bg); color:var(--warning); }
+.tag-format { background:var(--accent-light); color:var(--accent); }
+.tag-confirm { background:var(--danger-bg); color:var(--danger); }
+
+/* ANIM HERO */
+.anim-hero { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:20px; margin-bottom:16px; display:flex; align-items:center; gap:16px; }
+.anim-avatar { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:700; flex-shrink:0; }
+.anim-hero-name { font-family:'DM Serif Display',serif; font-size:22px; }
+.anim-hero-meta { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.anim-hero-stats { display:flex; gap:16px; margin-top:8px; }
+.anim-stat strong { display:block; font-size:18px; font-weight:600; line-height:1.1; }
+.anim-stat { font-size:12px; color:var(--text-muted); }
 
 /* RAPPELS */
-.rappels-section { margin-bottom: 28px; }
-.rappels-heading { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); }
-.rappel-row { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 6px; }
-.rappel-info { flex: 1; }
-.rappel-lieu { font-size: 14px; font-weight: 500; }
-.rappel-who { font-size: 12px; color: var(--text-muted); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
-.rappel-date { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.rappel-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; gap:10px; }
+.rappel-card-tbd { border-left:3px solid #f09595; }
+.rappel-info { flex:1; min-width:0; }
+.rappel-lieu { font-size:13px; font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.rappel-who { font-size:11px; color:var(--text-muted); margin-top:2px; display:flex; align-items:center; gap:5px; }
+.rappel-date-txt { font-size:11px; color:var(--text-muted); white-space:nowrap; }
+.section-title { font-size:13px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; margin:20px 0 8px; display:flex; align-items:center; gap:8px; }
 
 /* ADMIN */
-.admin-section { margin-bottom: 32px; }
-.admin-section-title { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
-.admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px; }
-.admin-profile-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 12px; position: relative; }
-.admin-profile-card:hover { border-color: var(--border-light); }
-.admin-profile-info { flex: 1; }
-.admin-profile-name { font-size: 14px; font-weight: 500; }
-.admin-profile-count { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-.admin-profile-actions { display: flex; gap: 6px; }
-.admin-event-row { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 12px; }
-.admin-event-info { flex: 1; }
-.admin-event-lieu { font-size: 13px; font-weight: 500; }
-.admin-event-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.color-picker-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-.color-opt { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.15s; }
-.color-opt.selected { border-color: var(--text); }
+.admin-card { background:var(--white); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:8px; display:flex; align-items:center; gap:12px; }
+.admin-info { flex:1; min-width:0; }
+.admin-name { font-size:14px; font-weight:500; }
+.admin-sub { font-size:12px; color:var(--text-muted); margin-top:2px; }
+.admin-actions { display:flex; gap:6px; }
+
+/* BUTTONS */
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:10px 16px; border-radius:10px; font-size:14px; font-weight:500; cursor:pointer; font-family:'DM Sans',sans-serif; border:1px solid; transition:all 0.15s; }
+.btn:active { opacity:0.85; transform:scale(0.98); }
+.btn-primary { background:var(--accent); color:white; border-color:var(--accent); }
+.btn-secondary { background:var(--white); color:var(--text); border-color:var(--border); }
+.btn-danger { background:var(--danger-bg); color:var(--danger); border-color:#f0c0a8; }
+.btn-sm { padding:6px 12px; font-size:12px; border-radius:8px; }
+.btn-icon { width:34px; height:34px; padding:0; border-radius:8px; }
+.btn-block { width:100%; margin-top:8px; border-style:dashed; }
 
 /* MODAL */
-.modal-overlay { position: fixed; inset: 0; background: rgba(20,15,10,0.45); z-index: 500; display: none; align-items: center; justify-content: center; }
-.modal-overlay.open { display: flex; }
-.modal-box { background: var(--white); border-radius: 14px; padding: 28px 28px 24px; width: 460px; max-width: 95vw; box-shadow: 0 16px 48px rgba(0,0,0,0.15); max-height: 90vh; overflow-y: auto; }
-.modal-title { font-family: 'DM Serif Display', serif; font-size: 20px; margin-bottom: 20px; }
-.field { margin-bottom: 14px; }
-.field label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
-.field input, .field select { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 7px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--surface); outline: none; transition: border-color 0.15s; }
-.field input:focus, .field select:focus { border-color: var(--accent-mid); }
-.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:500; display:none; align-items:flex-end; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal-box { background:var(--white); border-radius:20px 20px 0 0; padding:20px 20px calc(20px + env(safe-area-inset-bottom)); width:100%; max-width:600px; max-height:90vh; overflow-y:auto; }
+.modal-handle { width:40px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 16px; }
+.modal-title { font-family:'DM Serif Display',serif; font-size:20px; margin-bottom:16px; }
+.field { margin-bottom:12px; }
+.field label { display:block; font-size:11px; font-weight:600; letter-spacing:0.04em; color:var(--text-muted); margin-bottom:4px; text-transform:uppercase; }
+.field input, .field select { width:100%; padding:11px 14px; border:1px solid var(--border); border-radius:10px; font-size:16px; font-family:'DM Sans',sans-serif; color:var(--text); background:var(--surface); outline:none; }
+.field input:focus, .field select:focus { border-color:var(--accent-mid); }
+.modal-actions { display:flex; gap:8px; margin-top:16px; }
+.modal-actions .btn { flex:1; padding:13px; }
 
-/* CONFIRM DIALOG */
-.confirm-overlay { position: fixed; inset: 0; background: rgba(20,15,10,0.55); z-index: 600; display: none; align-items: center; justify-content: center; }
-.confirm-overlay.open { display: flex; }
-.confirm-box { background: var(--white); border-radius: 12px; padding: 24px; width: 380px; max-width: 95vw; box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
-.confirm-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-.confirm-text { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
-.confirm-actions { display: flex; justify-content: flex-end; gap: 8px; }
+/* CONFIRM */
+.confirm-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:600; display:none; align-items:flex-end; justify-content:center; }
+.confirm-overlay.open { display:flex; }
+.confirm-box { background:var(--white); border-radius:20px 20px 0 0; padding:20px 20px calc(20px + env(safe-area-inset-bottom)); width:100%; max-width:600px; }
+.confirm-handle { width:40px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 16px; }
+.confirm-title { font-size:17px; font-weight:600; margin-bottom:8px; }
+.confirm-text { font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:20px; }
+.confirm-actions { display:flex; gap:8px; }
+.confirm-actions .btn { flex:1; padding:13px; }
+
+/* COLOR PICKER */
+.color-picker-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+.color-opt { width:32px; height:32px; border-radius:50%; cursor:pointer; border:3px solid transparent; transition:all 0.15s; }
+.color-opt.selected { border-color:var(--text); transform:scale(1.15); }
+
+/* EMPTY */
+.empty-box { border:1px dashed var(--border); border-radius:12px; padding:24px; text-align:center; font-size:13px; color:var(--text-faint); }
 
 /* TOAST */
-.toast { position: fixed; bottom: 24px; right: 24px; background: var(--text); color: white; padding: 12px 18px; border-radius: 8px; font-size: 13px; z-index: 700; opacity: 0; transform: translateY(8px); transition: all 0.2s; pointer-events: none; }
-.toast.show { opacity: 1; transform: translateY(0); }
+.toast { position:fixed; bottom:calc(72px + env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%) translateY(12px); background:var(--text); color:white; padding:10px 20px; border-radius:20px; font-size:13px; z-index:700; opacity:0; transition:all 0.2s; pointer-events:none; white-space:nowrap; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.view.active > * { animation: fadeIn 0.2s ease both; }
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+.no-anim { text-align:center; color:var(--text-faint); font-size:13px; padding:20px; }
 </style>
 </head>
 <body>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-brand">
+      Planning NOA
+      <small>Été 2026</small>
+    </div>
+  </div>
+  <button class="topbar-add" onclick="openModal('event')" aria-label="Ajouter">+</button>
+</header>
+
+<!-- DRAWER -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<nav class="drawer" id="drawer">
+  <div class="drawer-brand">
     <div class="brand-tag">Maison NOA</div>
     <div class="brand-name">Planning<br>Été 2026</div>
     <div class="brand-sub">Juin · Juillet · Août</div>
   </div>
-  <div class="sidebar-section">
-    <div class="sidebar-label">Général</div>
-    <a class="nav-item active" onclick="showView('general',this)">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+  <div class="drawer-section">
+    <div class="drawer-label">Général</div>
+    <div class="nav-item active" onclick="navTo('general',this)">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Planning général
-    </a>
-    <a class="nav-item" onclick="showView('rappels',this)">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-      Rappels <span class="alert-dot" id="alert-dot" style="display:none;"></span>
-    </a>
-    <a class="nav-item" onclick="showView('admin',this)">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    </div>
+    <div class="nav-item" onclick="navTo('rappels',this)">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Rappels <span class="alert-dot" id="alert-dot-drawer" style="display:none;"></span>
+    </div>
+    <div class="nav-item" onclick="navTo('admin',this)">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       Administration
-    </a>
+    </div>
   </div>
-  <div class="sidebar-section">
-    <div class="sidebar-label">Animateurs</div>
-    <div id="animateurs-nav"></div>
+  <div class="drawer-section">
+    <div class="drawer-label">Animateurs</div>
+    <div id="drawer-animateurs"></div>
   </div>
-  <div class="sidebar-footer">Maison NOA © 2026</div>
-</aside>
+  <div class="drawer-footer">Maison NOA © 2026</div>
+</nav>
 
+<!-- MAIN -->
 <main class="main">
-  <div class="topbar">
-    <div>
-      <div class="topbar-title" id="topbar-title">Planning général</div>
-      <div class="topbar-sub" id="topbar-sub">Toutes les animations · Été 2026</div>
-    </div>
-    <div class="topbar-actions">
-      <button class="btn btn-secondary" onclick="openModal('event')" id="btn-add-event" style="display:none;">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Ajouter animation
-      </button>
-      <button class="btn btn-primary" onclick="openModal('event')">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Nouvelle animation
-      </button>
-    </div>
-  </div>
-
   <div class="content">
     <div id="view-general" class="view active"></div>
     <div id="view-rappels" class="view"></div>
@@ -220,20 +243,38 @@ table.plan tbody td { padding: 11px 14px; vertical-align: middle; }
   </div>
 </main>
 
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bottom-nav-item active" id="bnav-general" onclick="navTo('general',null,'general')">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    Planning
+  </button>
+  <button class="bottom-nav-item" id="bnav-rappels" onclick="navTo('rappels',null,'rappels')">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    Rappels
+    <span class="bnav-dot" id="bnav-dot" style="display:none;"></span>
+  </button>
+  <button class="bottom-nav-item" id="bnav-admin" onclick="navTo('admin',null,'admin')">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    Admin
+  </button>
+</nav>
+
 <!-- MODAL ÉVÉNEMENT -->
 <div class="modal-overlay" id="modal-event">
   <div class="modal-box">
-    <div class="modal-title" id="modal-event-title">Ajouter une animation</div>
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-event-title">Nouvelle animation</div>
     <input type="hidden" id="f-event-idx" value="-1">
     <div class="field"><label>Date</label><input type="date" id="f-date"></div>
     <div class="field"><label>Lieu / Enseigne</label><input type="text" id="f-lieu" placeholder="ex : Leclerc – Fouesnant (29)"></div>
     <div class="field"><label>Animateur</label><select id="f-animateur"></select></div>
-    <div class="field"><label>Plage horaire (Format)</label><input type="text" id="f-format" placeholder="ex : 10-13 / 14-18"></div>
+    <div class="field"><label>Plage horaire</label><input type="text" id="f-format" placeholder="ex : 10-13 / 14-18"></div>
     <div class="field"><label>Créneau</label>
       <select id="f-slot"><option value="Anim 1">Animation 1</option><option value="Anim 2">Animation 2</option></select>
     </div>
-    <div class="field"><label>Confirmé</label>
-      <select id="f-confirmed"><option value="1">Oui — confirmé</option><option value="0">Non — à confirmer</option></select>
+    <div class="field"><label>Statut</label>
+      <select id="f-confirmed"><option value="1">Confirmé</option><option value="0">À confirmer</option></select>
     </div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeModal('event')">Annuler</button>
@@ -245,6 +286,7 @@ table.plan tbody td { padding: 11px 14px; vertical-align: middle; }
 <!-- MODAL PROFIL -->
 <div class="modal-overlay" id="modal-profil">
   <div class="modal-box">
+    <div class="modal-handle"></div>
     <div class="modal-title" id="modal-profil-title">Ajouter un animateur</div>
     <input type="hidden" id="f-profil-old-name" value="">
     <div class="field"><label>Prénom / Nom</label><input type="text" id="f-profil-name" placeholder="ex : Marie"></div>
@@ -259,14 +301,15 @@ table.plan tbody td { padding: 11px 14px; vertical-align: middle; }
   </div>
 </div>
 
-<!-- CONFIRM DIALOG -->
+<!-- CONFIRM -->
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
-    <div class="confirm-title" id="confirm-title">Confirmer la suppression</div>
+    <div class="confirm-handle"></div>
+    <div class="confirm-title" id="confirm-title"></div>
     <div class="confirm-text" id="confirm-text"></div>
     <div class="confirm-actions">
-      <button class="btn btn-secondary btn-sm" onclick="closeConfirm()">Annuler</button>
-      <button class="btn btn-danger btn-sm" id="confirm-ok-btn" onclick="">Supprimer</button>
+      <button class="btn btn-secondary" onclick="closeConfirm()">Annuler</button>
+      <button class="btn btn-danger" id="confirm-ok-btn">Supprimer</button>
     </div>
   </div>
 </div>
@@ -274,29 +317,28 @@ table.plan tbody td { padding: 11px 14px; vertical-align: middle; }
 <div class="toast" id="toast"></div>
 
 <script>
-const DAYS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-const MONTHS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-
-const COLOR_PALETTE = [
-  {name:'bleu',    dot:'#1a4a8a', bg:'#e8f0fb', text:'#0c3270'},
-  {name:'vert',    dot:'#0f5e47', bg:'#e2f4ed', text:'#084033'},
-  {name:'rose',    dot:'#8a1a4a', bg:'#fbe8f0', text:'#620f33'},
-  {name:'sauge',   dot:'#3a6e18', bg:'#eaf4e2', text:'#274d0f'},
-  {name:'ambre',   dot:'#7a3e0a', bg:'#faf0e3', text:'#572b05'},
-  {name:'violet',  dot:'#4a2e8a', bg:'#eeebfb', text:'#311f62'},
-  {name:'teal',    dot:'#0f6e6e', bg:'#e2f4f4', text:'#084f4f'},
-  {name:'corail',  dot:'#993c1d', bg:'#faece7', text:'#712b13'},
+const DAYS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const MONTHS_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const COLOR_PALETTE=[
+  {name:'bleu',   dot:'#1a4a8a',bg:'#e8f0fb',text:'#0c3270'},
+  {name:'vert',   dot:'#0f5e47',bg:'#e2f4ed',text:'#084033'},
+  {name:'rose',   dot:'#8a1a4a',bg:'#fbe8f0',text:'#620f33'},
+  {name:'sauge',  dot:'#3a6e18',bg:'#eaf4e2',text:'#274d0f'},
+  {name:'ambre',  dot:'#7a3e0a',bg:'#faf0e3',text:'#572b05'},
+  {name:'violet', dot:'#4a2e8a',bg:'#eeebfb',text:'#311f62'},
+  {name:'teal',   dot:'#0f6e6e',bg:'#e2f4f4',text:'#084f4f'},
+  {name:'corail', dot:'#993c1d',bg:'#faece7',text:'#712b13'},
 ];
 
-let ANIMATEURS = [
-  {name:'Clément', color: COLOR_PALETTE[0]},
-  {name:'Solal',   color: COLOR_PALETTE[1]},
-  {name:'Nina',    color: COLOR_PALETTE[2]},
-  {name:'Lily',    color: COLOR_PALETTE[3]},
-  {name:'Pierre',  color: COLOR_PALETTE[4]},
+let ANIMATEURS=[
+  {name:'Clément',color:COLOR_PALETTE[0]},
+  {name:'Solal',  color:COLOR_PALETTE[1]},
+  {name:'Nina',   color:COLOR_PALETTE[2]},
+  {name:'Lily',   color:COLOR_PALETTE[3]},
+  {name:'Pierre', color:COLOR_PALETTE[4]},
 ];
 
-let DATA = [
+let DATA=[
   {date:'2026-06-06',lieu:'Salon Gastro – Quintin',animateur:'Clément',format:'',slot:'Anim 1',confirmed:true},
   {date:'2026-06-12',lieu:'Plouharnel – Super U',animateur:'Clément',format:'',slot:'Anim 1',confirmed:true},
   {date:'2026-06-13',lieu:'Intermarché – Trémuson',animateur:'Lily',format:'',slot:'Anim 1',confirmed:true},
@@ -318,284 +360,217 @@ let DATA = [
   {date:'2026-08-14',lieu:'Fouesnant – Leclerc (29)',animateur:'?',format:'',slot:'Anim 1',confirmed:false},
 ];
 
-let currentTab = 'general';
-let currentAnimateur = null;
-let confirmCallback = null;
+let currentTab='general';
+let currentAnimateur=null;
 
 // HELPERS
-function getMonth(d) { return MONTHS_FR[parseInt(d.split('-')[1])-1]; }
-function dayNum(d) { return parseInt(d.split('-')[2]); }
-function dayName(d) { return DAYS[new Date(d+'T00:00:00').getDay()]; }
-function daysUntil(d) { const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/86400000); }
-function fmtDate(d) { const dt=new Date(d+'T00:00:00');return DAYS[dt.getDay()]+' '+dt.getDate()+' '+MONTHS_FR[dt.getMonth()]; }
-function getColor(name) {
-  const a = ANIMATEURS.find(a=>a.name===name);
-  return a ? a.color : {dot:'#888780',bg:'#f1efe8',text:'#444441'};
+function getMonth(d){return MONTHS_FR[parseInt(d.split('-')[1])-1];}
+function dayNum(d){return parseInt(d.split('-')[2]);}
+function dayName(d){return DAYS[new Date(d+'T00:00:00').getDay()];}
+function daysUntil(d){const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/86400000);}
+function fmtDate(d){const dt=new Date(d+'T00:00:00');return DAYS[dt.getDay()]+' '+dt.getDate()+' '+MONTHS_FR[dt.getMonth()];}
+function getColor(name){const a=ANIMATEURS.find(a=>a.name===name);return a?a.color:{dot:'#888780',bg:'#f1efe8',text:'#444441'};}
+function initials(name){if(!name||name==='?')return '?';const p=name.trim().split(' ');return p.length>=2?(p[0][0]+p[1][0]).toUpperCase():name.substring(0,2).toUpperCase();}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// DRAWER
+function toggleDrawer(){
+  document.getElementById('drawer').classList.toggle('open');
+  document.getElementById('drawer-overlay').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
 }
-function initials(name) {
-  if(!name||name==='?') return '?';
-  const parts = name.trim().split(' ');
-  return parts.length>=2 ? (parts[0][0]+parts[1][0]).toUpperCase() : name.substring(0,2).toUpperCase();
-}
-function showToast(msg) {
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
 }
 
-// SIDEBAR
-function buildSidebar() {
-  const nav = document.getElementById('animateurs-nav');
-  nav.innerHTML = ANIMATEURS.map(a => `
-    <a class="nav-item${currentTab==='anim-'+a.name?' active':''}" onclick="showAnimateur('${a.name}',this)">
+// SIDEBAR BUILD
+function buildDrawer(){
+  document.getElementById('drawer-animateurs').innerHTML=ANIMATEURS.map(a=>`
+    <div class="nav-item${currentTab==='anim-'+a.name?' active':''}" onclick="navToAnimateur('${a.name}',this)">
       <div class="nav-avatar" style="background:${a.color.bg};color:${a.color.dot};">${initials(a.name)}</div>
       ${a.name}
-    </a>
+    </div>
   `).join('');
 }
 
-// VIEW SWITCHING
-function showView(id, el) {
-  currentTab = id;
-  currentAnimateur = null;
+// NAVIGATION
+function navTo(id, drawerEl, bnavId){
+  currentTab=id; currentAnimateur=null;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
-  if(el) el.classList.add('active');
-  const titles = {
-    general: ['Planning général','Toutes les animations · Été 2026'],
-    rappels: ['Rappels','Animations à venir et créneaux à confirmer'],
-    admin: ['Administration','Gérer les animateurs et les animations'],
-  };
-  if(titles[id]) {
-    document.getElementById('topbar-title').textContent=titles[id][0];
-    document.getElementById('topbar-sub').textContent=titles[id][1];
-  }
+  if(drawerEl) drawerEl.classList.add('active');
+  if(bnavId) document.getElementById('bnav-'+bnavId).classList.add('active');
+  closeDrawer();
   if(id==='general') renderGeneral();
   if(id==='rappels') renderRappels();
   if(id==='admin') renderAdmin();
 }
 
-function showAnimateur(name, el) {
-  currentTab='anim-'+name;
-  currentAnimateur=name;
+function navToAnimateur(name, drawerEl){
+  currentTab='anim-'+name; currentAnimateur=name;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('view-animateur').classList.add('active');
-  if(el) el.classList.add('active');
-  document.getElementById('topbar-title').textContent=name;
-  document.getElementById('topbar-sub').textContent='Planning personnel · Été 2026';
+  if(drawerEl) drawerEl.classList.add('active');
+  closeDrawer();
   renderAnimateur(name);
 }
 
 // GENERAL
-function renderGeneral() {
-  const counts={};
-  ANIMATEURS.forEach(a=>counts[a.name]=0);
+function renderGeneral(){
+  const counts={};ANIMATEURS.forEach(a=>counts[a.name]=0);
   DATA.forEach(d=>{if(counts[d.animateur]!==undefined)counts[d.animateur]++;});
   const monthGroups={'Juin':[],'Juillet':[],'Août':[]};
   DATA.forEach(d=>{const m=getMonth(d.date);if(monthGroups[m])monthGroups[m].push(d);});
 
-  let html=`<div class="stats-row">
-    <div class="stat-card"><div class="stat-val">${DATA.length}</div><div class="stat-lbl">Animations total</div></div>
-    ${ANIMATEURS.map(a=>`<div class="stat-card" style="border-left:3px solid ${a.color.dot}">
-      <div class="stat-val">${counts[a.name]||0}</div>
-      <div class="stat-lbl" style="display:flex;align-items:center;gap:5px;"><span style="width:7px;height:7px;border-radius:50%;background:${a.color.dot};display:inline-block;"></span>${a.name}</div>
-    </div>`).join('')}
-    <div class="stat-card" style="border-left:3px solid #e24b4a">
-      <div class="stat-val">${DATA.filter(d=>!d.confirmed||d.animateur==='?').length}</div>
-      <div class="stat-lbl" style="color:var(--danger);">À confirmer</div>
-    </div>
+  let html=`<div class="stats-scroll">
+    <div class="stat-card"><div class="stat-val">${DATA.length}</div><div class="stat-lbl">Total</div></div>
+    ${ANIMATEURS.map(a=>`<div class="stat-card" style="border-left:3px solid ${a.color.dot}"><div class="stat-val">${counts[a.name]||0}</div><div class="stat-lbl" style="color:${a.color.dot};">${a.name}</div></div>`).join('')}
+    <div class="stat-card" style="border-left:3px solid #e24b4a"><div class="stat-val">${DATA.filter(d=>!d.confirmed||d.animateur==='?').length}</div><div class="stat-lbl" style="color:var(--danger);">À décerner</div></div>
   </div>`;
 
   Object.entries(monthGroups).forEach(([month,items])=>{
     items.sort((a,b)=>a.date.localeCompare(b.date));
-    html+=`<div class="planning-wrap">
-      <div class="planning-month-header">${month} <span>${items.length} animation${items.length>1?'s':''}</span></div>
-      <table class="plan"><thead><tr><th>Date</th><th>Lieu</th><th>Animateur</th><th>Plage horaire</th><th>Créneau</th><th>Statut</th><th></th></tr></thead><tbody>`;
-    if(!items.length){
-      html+='<tr><td colspan="7" style="text-align:center;color:var(--text-faint);padding:18px;font-size:12px;">Aucune animation ce mois</td></tr>';
-    } else {
-      items.forEach((d,_)=>{
-        const idx=DATA.indexOf(d);
-        const c=getColor(d.animateur);
-        const diff=daysUntil(d.date);
-        let rem='';
-        if(diff>=0&&diff<=1) rem='<span class="reminder-j1" style="margin-left:6px;">J-1</span>';
-        else if(diff>=0&&diff<=7) rem='<span class="reminder-j7" style="margin-left:6px;">J-7</span>';
-        html+=`<tr>
-          <td><div class="date-num">${dayNum(d.date)}</div><div class="date-day">${dayName(d.date)}</div></td>
-          <td><strong>${d.lieu}</strong>${d.note?'<br><span class="confirm-tag" style="margin-top:3px;display:inline-block;">⚠ '+d.note+'</span>':''}${rem}</td>
-          <td><div style="display:flex;align-items:center;gap:8px;"><div style="width:28px;height:28px;border-radius:50%;background:${c.bg};color:${c.dot};display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">${initials(d.animateur)}</div>${d.animateur}</div></td>
-          <td>${d.format?'<span class="format-tag">'+d.format+'</span>':'<span style="color:var(--text-faint);font-size:12px;">—</span>'}</td>
-          <td><span class="slot-badge ${d.slot==='Anim 1'?'slot-1':'slot-2'}">${d.slot}</span></td>
-          <td>${!d.confirmed||d.animateur==='?'?'<span class="tbd-tag">À décerner</span>':'<span style="font-size:12px;color:var(--accent);">✓ Confirmé</span>'}</td>
-          <td><button class="btn btn-secondary btn-sm" onclick="editEvent(${idx})" style="padding:4px 8px;font-size:11px;">✏️</button></td>
-        </tr>`;
-      });
-    }
-    html+='</tbody></table></div>';
+    html+=`<div class="month-header"><div class="month-title-txt">${month}</div><span class="month-count-badge">${items.length} anim.</span></div>`;
+    if(!items.length){html+='<div class="empty-box">Aucune animation</div>';}
+    else items.forEach(d=>{html+=eventCard(d,DATA.indexOf(d),true);});
   });
   document.getElementById('view-general').innerHTML=html;
 }
 
+function eventCard(d,idx,showAnim){
+  const c=getColor(d.animateur);
+  const diff=daysUntil(d.date);
+  let rem='';
+  if(diff>=0&&diff<=1)rem='<span class="tag tag-j1">J-1</span>';
+  else if(diff>=0&&diff<=7)rem='<span class="tag tag-j7">J-7</span>';
+  return `<div class="event-card">
+    <div class="event-date"><div class="event-date-num">${dayNum(d.date)}</div><div class="event-date-day">${dayName(d.date)}</div></div>
+    <div class="event-body">
+      <div class="event-lieu">${d.lieu}</div>
+      <div class="event-tags">
+        ${showAnim?`<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;color:${c.dot};"><span style="width:7px;height:7px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${d.animateur}</span>`:''}
+        <span class="tag ${d.slot==='Anim 1'?'tag-slot1':'tag-slot2'}">${d.slot}</span>
+        ${d.format?'<span class="tag tag-format">'+d.format+'</span>':''}
+        ${!d.confirmed||d.animateur==='?'?'<span class="tag tag-tbd">À décerner</span>':''}
+        ${d.note?'<span class="tag tag-confirm">⚠ '+d.note+'</span>':''}
+        ${rem}
+      </div>
+    </div>
+    <div class="event-actions">
+      <button class="btn btn-secondary btn-icon btn-sm" onclick="editEvent(${idx})" aria-label="Modifier">✏️</button>
+    </div>
+  </div>`;
+}
+
 // RAPPELS
-function renderRappels() {
+function renderRappels(){
   const soon=DATA.filter(d=>{const diff=daysUntil(d.date);return diff>=0&&diff<=14;}).sort((a,b)=>a.date.localeCompare(b.date));
   const tbd=DATA.filter(d=>d.animateur==='?'||!d.confirmed).sort((a,b)=>a.date.localeCompare(b.date));
-  document.getElementById('alert-dot').style.display=(soon.length+tbd.length)>0?'inline-block':'none';
-
-  let html=`<div class="rappels-section">
-    <div class="rappels-heading">🔔 Prochaines animations (14 jours) <span style="font-size:12px;font-weight:400;color:var(--text-muted);">${soon.length} animation${soon.length>1?'s':''}</span></div>`;
-  if(!soon.length){
-    html+='<div style="font-size:13px;color:var(--text-muted);padding:16px;background:var(--white);border:1px solid var(--border);border-radius:8px;">Aucune animation dans les 14 prochains jours.</div>';
-  } else {
-    soon.forEach(d=>{
-      const diff=daysUntil(d.date);
-      const c=getColor(d.animateur);
-      let badge=diff<=1?'<span class="reminder-j1">J-'+diff+'</span>':diff<=7?'<span class="reminder-j7">J-'+diff+'</span>':'<span style="background:#e8f0eb;color:var(--accent);font-size:11px;font-weight:600;padding:2px 8px;border-radius:5px;">J-'+diff+'</span>';
-      html+=`<div class="rappel-row">${badge}<div class="rappel-info"><div class="rappel-lieu">${d.lieu}</div><div class="rappel-who"><span style="width:7px;height:7px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${d.animateur}</div></div><div class="rappel-date">${fmtDate(d.date)}</div></div>`;
-    });
-  }
-  html+=`</div><div class="rappels-section">
-    <div class="rappels-heading" style="color:var(--danger);">⚠️ À décerner <span style="font-size:12px;font-weight:400;color:var(--text-muted);">${tbd.length} animation${tbd.length>1?'s':''}</span></div>`;
-  tbd.forEach(d=>{
-    html+=`<div class="rappel-row" style="border-left:3px solid #f09595;">
-      <span class="tbd-tag">À décerner</span>
-      <div class="rappel-info"><div class="rappel-lieu">${d.lieu}${d.note?' — <em style="font-size:12px;">'+d.note+'</em>':''}</div><div class="rappel-who" style="color:var(--warning);">${d.animateur}</div></div>
-      <div class="rappel-date">${fmtDate(d.date)}</div>
-    </div>`;
+  const hasAlerts=(soon.length+tbd.length)>0;
+  ['alert-dot-drawer','bnav-dot'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display=hasAlerts?'inline-block':'none';
   });
-  html+='</div>';
+
+  let html=`<div class="section-title">🔔 Dans les 14 prochains jours</div>`;
+  if(!soon.length){html+='<div class="empty-box">Aucune animation prochainement</div>';}
+  else soon.forEach(d=>{
+    const diff=daysUntil(d.date);
+    const c=getColor(d.animateur);
+    let badge=diff<=1?'<span class="tag tag-j1">J-1</span>':diff<=7?'<span class="tag tag-j7">J-7</span>':'<span class="tag tag-ok">J-'+diff+'</span>';
+    html+=`<div class="rappel-card">${badge}<div class="rappel-info"><div class="rappel-lieu">${d.lieu}</div><div class="rappel-who"><span style="width:7px;height:7px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${d.animateur}</div></div><div class="rappel-date-txt">${fmtDate(d.date)}</div></div>`;
+  });
+
+  html+=`<div class="section-title" style="color:var(--danger);">⚠️ À décerner (${tbd.length})</div>`;
+  if(!tbd.length){html+='<div class="empty-box">Tous les créneaux sont attribués ✓</div>';}
+  else tbd.forEach(d=>{
+    html+=`<div class="rappel-card rappel-card-tbd"><span class="tag tag-tbd">À décerner</span><div class="rappel-info"><div class="rappel-lieu">${d.lieu}</div><div class="rappel-who" style="color:var(--warning);">${d.animateur}${d.note?' · '+d.note:''}</div></div><div class="rappel-date-txt">${fmtDate(d.date)}</div></div>`;
+  });
   document.getElementById('view-rappels').innerHTML=html;
 }
 
 // ANIMATEUR
-function renderAnimateur(name) {
+function renderAnimateur(name){
   const myData=DATA.filter(d=>d.animateur===name).sort((a,b)=>a.date.localeCompare(b.date));
   const c=getColor(name);
   const months=['Juin','Juillet','Août'];
-
-  let html=`<div class="animateur-hero">
-    <div class="animateur-avatar-big" style="background:${c.bg};color:${c.dot};">${initials(name)}</div>
+  let html=`<div class="anim-hero">
+    <div class="anim-avatar" style="background:${c.bg};color:${c.dot};">${initials(name)}</div>
     <div>
-      <div class="animateur-name">${name}</div>
-      <div class="animateur-meta">Animateur · Maison NOA Été 2026</div>
-      <div class="animateur-stats">
-        <div class="animateur-stat"><strong>${myData.length}</strong>animation${myData.length>1?'s':''}</div>
-        <div class="animateur-stat"><strong>${myData.filter(d=>d.confirmed).length}</strong>confirmée${myData.filter(d=>d.confirmed).length>1?'s':''}</div>
-        <div class="animateur-stat"><strong>${myData.filter(d=>!d.confirmed).length}</strong>à confirmer</div>
+      <div class="anim-hero-name">${name}</div>
+      <div class="anim-hero-meta">Animateur · NOA Été 2026</div>
+      <div class="anim-hero-stats">
+        <div class="anim-stat"><strong>${myData.length}</strong>animations</div>
+        <div class="anim-stat"><strong>${myData.filter(d=>d.confirmed).length}</strong>confirmées</div>
+        <div class="anim-stat"><strong>${myData.filter(d=>!d.confirmed).length}</strong>à confirmer</div>
       </div>
     </div>
   </div>`;
-
   months.forEach(m=>{
     const mData=myData.filter(d=>getMonth(d.date)===m);
-    html+=`<div class="month-block"><div class="month-title">${m} <span class="month-count">${mData.length} animation${mData.length!==1?'s':''}</span></div>`;
-    if(!mData.length){
-      html+=`<div class="no-anim-month">Aucune animation en ${m}</div>`;
-    } else {
-      mData.forEach(d=>{
-        const idx=DATA.indexOf(d);
-        const diff=daysUntil(d.date);
-        let rem='';
-        if(diff>=0&&diff<=1) rem='<span class="reminder-j1">J-1</span>';
-        else if(diff>=0&&diff<=7) rem='<span class="reminder-j7">J-7</span>';
-        html+=`<div class="anim-card">
-          <div class="card-date"><div class="card-date-num">${dayNum(d.date)}</div><div class="card-date-day">${dayName(d.date)}</div></div>
-          <div class="card-body">
-            <div class="card-lieu">${d.lieu}</div>
-            <div class="card-meta">
-              <span class="slot-badge ${d.slot==='Anim 1'?'slot-1':'slot-2'}">${d.slot}</span>
-              ${d.format?'<span class="format-tag">'+d.format+'</span>':''}
-              ${!d.confirmed?'<span class="tbd-tag">À confirmer</span>':'<span style="font-size:11px;color:var(--accent);font-weight:500;">✓ Confirmé</span>'}
-              ${d.note?'<span class="confirm-tag">⚠ '+d.note+'</span>':''}
-              ${rem}
-            </div>
-          </div>
-          <button class="btn btn-secondary btn-sm" onclick="editEvent(${idx})" style="padding:4px 8px;font-size:11px;flex-shrink:0;">✏️</button>
-        </div>`;
-      });
-    }
-    html+=`<button class="btn btn-secondary" onclick="openModalForAnimateur('${name}','${m}')" style="margin-top:8px;width:100%;justify-content:center;border-style:dashed;font-size:13px;">+ Ajouter une animation en ${m}</button>`;
-    html+='</div>';
+    html+=`<div class="month-header"><div class="month-title-txt">${m}</div><span class="month-count-badge">${mData.length} anim.</span></div>`;
+    if(!mData.length){html+='<div class="empty-box">Aucune animation en '+m+'</div>';}
+    else mData.forEach(d=>{html+=eventCard(d,DATA.indexOf(d),false);});
+    html+=`<button class="btn btn-secondary btn-block" onclick="openModalForAnimateur('${name}','${m}')">+ Ajouter en ${m}</button>`;
   });
   document.getElementById('view-animateur').innerHTML=html;
 }
 
 // ADMIN
-function renderAdmin() {
-  let html=`<div class="admin-section">
-    <div class="admin-section-title">
-      Animateurs
-      <button class="btn btn-primary btn-sm" onclick="openModal('profil')">+ Ajouter un animateur</button>
-    </div>
-    <div class="admin-grid">`;
-
+function renderAdmin(){
+  let html=`<div class="section-title">Animateurs</div>`;
   ANIMATEURS.forEach((a,i)=>{
     const count=DATA.filter(d=>d.animateur===a.name).length;
-    html+=`<div class="admin-profile-card">
+    html+=`<div class="admin-card">
       <div class="nav-avatar" style="width:40px;height:40px;font-size:14px;background:${a.color.bg};color:${a.color.dot};">${initials(a.name)}</div>
-      <div class="admin-profile-info">
-        <div class="admin-profile-name">${a.name}</div>
-        <div class="admin-profile-count">${count} animation${count>1?'s':''}</div>
-      </div>
-      <div class="admin-profile-actions">
-        <button class="btn btn-secondary btn-sm" onclick="editProfil(${i})" title="Modifier">✏️</button>
-        <button class="btn btn-danger btn-sm" onclick="confirmDeleteAnimateur(${i})" title="Supprimer">🗑</button>
+      <div class="admin-info"><div class="admin-name">${a.name}</div><div class="admin-sub">${count} animation${count>1?'s':''}</div></div>
+      <div class="admin-actions">
+        <button class="btn btn-secondary btn-icon btn-sm" onclick="editProfil(${i})">✏️</button>
+        <button class="btn btn-danger btn-icon btn-sm" onclick="confirmDeleteAnimateur(${i})">🗑</button>
       </div>
     </div>`;
   });
-
-  html+=`</div></div>
-  <div class="admin-section">
-    <div class="admin-section-title">
-      Animations <span style="font-size:13px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--text-muted);">${DATA.length} au total</span>
-      <button class="btn btn-primary btn-sm" onclick="openModal('event')">+ Ajouter</button>
-    </div>`;
-
-  const sorted=[...DATA].sort((a,b)=>a.date.localeCompare(b.date));
-  sorted.forEach(d=>{
+  html+=`<button class="btn btn-primary" style="width:100%;margin-bottom:24px;" onclick="openModal('profil')">+ Ajouter un animateur</button>`;
+  html+=`<div class="section-title">Toutes les animations <span style="font-size:11px;font-weight:400;color:var(--text-faint);">${DATA.length}</span></div>`;
+  [...DATA].sort((a,b)=>a.date.localeCompare(b.date)).forEach(d=>{
     const idx=DATA.indexOf(d);
     const c=getColor(d.animateur);
-    html+=`<div class="admin-event-row">
-      <div style="min-width:44px;text-align:center;">
-        <div style="font-size:18px;font-weight:600;">${dayNum(d.date)}</div>
-        <div style="font-size:10px;color:var(--text-muted);">${dayName(d.date)} ${getMonth(d.date).substring(0,3)}.</div>
-      </div>
-      <div class="admin-event-info">
-        <div class="admin-event-lieu">${d.lieu}</div>
-        <div class="admin-event-meta">
-          <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:7px;height:7px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${d.animateur}</span>
-          <span class="slot-badge ${d.slot==='Anim 1'?'slot-1':'slot-2'}">${d.slot}</span>
-          ${d.format?'<span class="format-tag">'+d.format+'</span>':''}
-          ${!d.confirmed||d.animateur==='?'?'<span class="tbd-tag">À décerner</span>':'<span style="font-size:11px;color:var(--accent);">✓</span>'}
+    html+=`<div class="admin-card">
+      <div style="min-width:40px;text-align:center;"><div style="font-size:18px;font-weight:700;line-height:1;">${dayNum(d.date)}</div><div style="font-size:10px;color:var(--text-muted);">${dayName(d.date)}</div></div>
+      <div class="admin-info">
+        <div class="admin-name">${d.lieu}</div>
+        <div class="admin-sub" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+          <span style="display:inline-flex;align-items:center;gap:3px;font-size:11px;"><span style="width:6px;height:6px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${d.animateur}</span>
+          <span class="tag ${d.slot==='Anim 1'?'tag-slot1':'tag-slot2'}">${d.slot}</span>
+          ${!d.confirmed||d.animateur==='?'?'<span class="tag tag-tbd">À décerner</span>':''}
         </div>
       </div>
-      <div style="display:flex;gap:6px;flex-shrink:0;">
-        <button class="btn btn-secondary btn-sm" onclick="editEvent(${idx})">✏️</button>
-        <button class="btn btn-danger btn-sm" onclick="confirmDeleteEvent(${idx})">🗑</button>
+      <div class="admin-actions">
+        <button class="btn btn-secondary btn-icon btn-sm" onclick="editEvent(${idx})">✏️</button>
+        <button class="btn btn-danger btn-icon btn-sm" onclick="confirmDeleteEvent(${idx})">🗑</button>
       </div>
     </div>`;
   });
-  html+='</div>';
   document.getElementById('view-admin').innerHTML=html;
 }
 
-// MODAL ÉVÉNEMENT
-function buildAnimateurSelect(selected) {
+// MODAL EVENT
+function buildAnimateurSelect(selected){
   const sel=document.getElementById('f-animateur');
   sel.innerHTML=`<option value="?">— À décerner —</option>`+ANIMATEURS.map(a=>`<option value="${a.name}"${a.name===selected?' selected':''}>${a.name}</option>`).join('');
   if(selected) sel.value=selected;
 }
-
-function openModal(type) {
-  if(type==='event') {
-    document.getElementById('modal-event-title').textContent='Ajouter une animation';
+function openModal(type){
+  if(type==='event'){
+    document.getElementById('modal-event-title').textContent='Nouvelle animation';
     document.getElementById('f-event-idx').value='-1';
-    document.getElementById('f-date').value='';
-    document.getElementById('f-lieu').value='';
-    document.getElementById('f-format').value='';
+    ['f-date','f-lieu','f-format'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('f-slot').value='Anim 1';
     document.getElementById('f-confirmed').value='1';
     buildAnimateurSelect('');
@@ -607,15 +582,13 @@ function openModal(type) {
   }
   document.getElementById('modal-'+type).classList.add('open');
 }
-
-function openModalForAnimateur(name, month) {
+function openModalForAnimateur(name,month){
   openModal('event');
   buildAnimateurSelect(name);
   const map={Juin:'2026-06-01',Juillet:'2026-07-01',Août:'2026-08-01'};
-  if(map[month]) document.getElementById('f-date').value=map[month];
+  if(map[month])document.getElementById('f-date').value=map[month];
 }
-
-function editEvent(idx) {
+function editEvent(idx){
   const d=DATA[idx];
   document.getElementById('modal-event-title').textContent='Modifier l\'animation';
   document.getElementById('f-event-idx').value=idx;
@@ -627,10 +600,8 @@ function editEvent(idx) {
   buildAnimateurSelect(d.animateur);
   document.getElementById('modal-event').classList.add('open');
 }
-
-function closeModal(type) { document.getElementById('modal-'+type).classList.remove('open'); }
-
-function saveEvent() {
+function closeModal(type){document.getElementById('modal-'+type).classList.remove('open');}
+function saveEvent(){
   const idx=parseInt(document.getElementById('f-event-idx').value);
   const date=document.getElementById('f-date').value;
   const lieu=document.getElementById('f-lieu').value.trim();
@@ -638,34 +609,24 @@ function saveEvent() {
   const format=document.getElementById('f-format').value.trim();
   const slot=document.getElementById('f-slot').value;
   const confirmed=document.getElementById('f-confirmed').value==='1';
-  if(!date||!lieu) { alert('Merci de remplir la date et le lieu.'); return; }
-  if(idx===-1) {
-    DATA.push({date,lieu,animateur:animateur||'?',format,slot,confirmed});
-    showToast('Animation ajoutée ✓');
-  } else {
-    DATA[idx]={...DATA[idx],date,lieu,animateur:animateur||'?',format,slot,confirmed};
-    showToast('Animation modifiée ✓');
-  }
+  if(!date||!lieu){alert('Merci de remplir la date et le lieu.');return;}
+  if(idx===-1){DATA.push({date,lieu,animateur:animateur||'?',format,slot,confirmed});showToast('Animation ajoutée ✓');}
+  else{DATA[idx]={...DATA[idx],date,lieu,animateur:animateur||'?',format,slot,confirmed};showToast('Animation modifiée ✓');}
   closeModal('event');
   refreshCurrentView();
 }
 
 // MODAL PROFIL
-function buildColorPicker(selectedName) {
-  const cp=document.getElementById('color-picker');
-  cp.innerHTML=COLOR_PALETTE.map(c=>`
-    <div class="color-opt${c.name===selectedName?' selected':''}" style="background:${c.dot};" onclick="selectColor('${c.name}')" title="${c.name}"></div>
-  `).join('');
+function buildColorPicker(selectedName){
+  document.getElementById('color-picker').innerHTML=COLOR_PALETTE.map(c=>`<div class="color-opt${c.name===selectedName?' selected':''}" style="background:${c.dot};" onclick="selectColor('${c.name}')" title="${c.name}"></div>`).join('');
   document.getElementById('f-profil-color').value=selectedName;
 }
-
-function selectColor(name) {
+function selectColor(name){
   document.querySelectorAll('.color-opt').forEach(o=>o.classList.remove('selected'));
   event.target.classList.add('selected');
   document.getElementById('f-profil-color').value=name;
 }
-
-function editProfil(i) {
+function editProfil(i){
   const a=ANIMATEURS[i];
   document.getElementById('modal-profil-title').textContent='Modifier l\'animateur';
   document.getElementById('f-profil-old-name').value=a.name;
@@ -673,75 +634,64 @@ function editProfil(i) {
   buildColorPicker(a.color.name);
   document.getElementById('modal-profil').classList.add('open');
 }
-
-function saveProfil() {
+function saveProfil(){
   const oldName=document.getElementById('f-profil-old-name').value;
   const name=document.getElementById('f-profil-name').value.trim();
   const colorName=document.getElementById('f-profil-color').value;
   const color=COLOR_PALETTE.find(c=>c.name===colorName)||COLOR_PALETTE[0];
-  if(!name) { alert('Merci de saisir un prénom.'); return; }
-  if(oldName) {
+  if(!name){alert('Merci de saisir un prénom.');return;}
+  if(oldName){
     const idx=ANIMATEURS.findIndex(a=>a.name===oldName);
     ANIMATEURS[idx]={name,color};
-    DATA.forEach(d=>{ if(d.animateur===oldName) d.animateur=name; });
+    DATA.forEach(d=>{if(d.animateur===oldName)d.animateur=name;});
     showToast('Animateur modifié ✓');
   } else {
-    if(ANIMATEURS.find(a=>a.name===name)) { alert('Ce nom existe déjà.'); return; }
+    if(ANIMATEURS.find(a=>a.name===name)){alert('Ce nom existe déjà.');return;}
     ANIMATEURS.push({name,color});
     showToast('Animateur ajouté ✓');
   }
   closeModal('profil');
-  buildSidebar();
+  buildDrawer();
   refreshCurrentView();
 }
 
 // SUPPRESSION
-function confirmDeleteAnimateur(i) {
+function confirmDeleteAnimateur(i){
   const a=ANIMATEURS[i];
   const count=DATA.filter(d=>d.animateur===a.name).length;
   document.getElementById('confirm-title').textContent='Supprimer '+a.name+' ?';
-  document.getElementById('confirm-text').innerHTML=`Vous allez supprimer <strong>${a.name}</strong> de la liste des animateurs.<br><br>${count>0?`<span style="color:var(--warning);">⚠️ ${count} animation${count>1?'s':''} lui étai${count>1?'ent':'t'} attribuée${count>1?'s':''} — ${count>1?'elles seront':'elle sera'} passée${count>1?'s':''} en mode <strong>« À décerner »</strong>.</span>`:'Cet animateur n\'a aucune animation attribuée.'}`;
+  document.getElementById('confirm-text').innerHTML=`Vous allez supprimer <strong>${a.name}</strong>.${count>0?`<br><br><span style="color:var(--warning);">⚠️ ${count} animation${count>1?'s':''} ${count>1?'seront passées':'sera passée'} en mode <strong>« À décerner »</strong>.</span>`:''}`;
   document.getElementById('confirm-ok-btn').onclick=()=>deleteAnimateur(i);
   document.getElementById('confirm-overlay').classList.add('open');
 }
-
-function confirmDeleteEvent(idx) {
+function confirmDeleteEvent(idx){
   const d=DATA[idx];
   document.getElementById('confirm-title').textContent='Supprimer cette animation ?';
-  document.getElementById('confirm-text').innerHTML=`Vous allez supprimer l'animation :<br><br><strong>${d.lieu}</strong><br>${fmtDate(d.date)}`;
+  document.getElementById('confirm-text').innerHTML=`<strong>${d.lieu}</strong><br>${fmtDate(d.date)}`;
   document.getElementById('confirm-ok-btn').onclick=()=>deleteEvent(idx);
   document.getElementById('confirm-overlay').classList.add('open');
 }
-
-function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); }
-
-function deleteAnimateur(i) {
+function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('open');}
+function deleteAnimateur(i){
   const name=ANIMATEURS[i].name;
-  DATA.forEach(d=>{ if(d.animateur===name){ d.animateur='?'; d.confirmed=false; } });
+  DATA.forEach(d=>{if(d.animateur===name){d.animateur='?';d.confirmed=false;}});
   ANIMATEURS.splice(i,1);
-  closeConfirm();
-  buildSidebar();
-  if(currentTab==='anim-'+name) showView('general',document.querySelector('.nav-item'));
+  closeConfirm(); buildDrawer();
+  if(currentTab==='anim-'+name)navTo('general',null,'general');
   else refreshCurrentView();
   showToast('Animateur supprimé — animations passées en « À décerner »');
 }
+function deleteEvent(idx){DATA.splice(idx,1);closeConfirm();refreshCurrentView();showToast('Animation supprimée ✓');}
 
-function deleteEvent(idx) {
-  DATA.splice(idx,1);
-  closeConfirm();
-  refreshCurrentView();
-  showToast('Animation supprimée ✓');
-}
-
-function refreshCurrentView() {
-  if(currentTab==='general') renderGeneral();
-  else if(currentTab==='rappels') renderRappels();
-  else if(currentTab==='admin') renderAdmin();
-  else if(currentAnimateur) renderAnimateur(currentAnimateur);
+function refreshCurrentView(){
+  if(currentTab==='general')renderGeneral();
+  else if(currentTab==='rappels')renderRappels();
+  else if(currentTab==='admin')renderAdmin();
+  else if(currentAnimateur)renderAnimateur(currentAnimateur);
 }
 
 // INIT
-buildSidebar();
+buildDrawer();
 renderGeneral();
 renderRappels();
 </script>
