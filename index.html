@@ -429,28 +429,31 @@ function launchConfetti(name){
   const screen=document.getElementById('confetti-screen');
   const welcome=document.getElementById('welcome-msg');
   const wname=document.getElementById('welcome-name');
+  // Update user badge immediately
+  const bc=getC(name);
+  const badge=document.getElementById('user-badge');
+  badge.style.display='flex';badge.style.background=bc.bg;badge.style.color=bc.dot;badge.style.borderColor=bc.dot;
+  badge.innerHTML=`<span style="width:8px;height:8px;border-radius:50%;background:${bc.dot};display:inline-block;"></span>${name}`;
+  // Launch confetti overlay
   screen.innerHTML='';
   screen.classList.add('active');
   wname.textContent='Bonjour '+name+' 👋';
   const c=getC(name);
-  const colors=[c.dot,c.bg,'#f5f2ec','#1c4a2e','#e4ede6','#faf0e3','#ffffff','#2d6b42'];
-  for(let i=0;i<90;i++){
+  const colors=[c.dot,c.bg,'#f5f2ec','#1c4a2e','#e4ede6','#faf0e3','#ffffff','#2d6b42','#a8d8b0'];
+  for(let i=0;i<100;i++){
     const el=document.createElement('div');
     el.className='confetto';
-    const size=Math.random()*10+5;
-    el.style.cssText=`left:${Math.random()*100}vw;top:-20px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${Math.random()*2+1.5}s;animation-delay:${Math.random()*0.8}s;opacity:1;`;
+    const size=Math.random()*12+5;
+    el.style.cssText=`left:${Math.random()*100}vw;top:-20px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${Math.random()*1.5+1.2}s;animation-delay:${Math.random()*0.5}s;opacity:1;`;
     screen.appendChild(el);
   }
-  setTimeout(()=>{welcome.classList.add('show');},200);
+  // Show welcome message immediately
+  setTimeout(()=>welcome.classList.add('show'),50);
+  // After 1.5s hide confetti and message
   setTimeout(()=>{
     welcome.classList.remove('show');
     screen.classList.remove('active');
-    document.getElementById('login-screen').classList.add('hidden');
-    const bc=getC(name);
-    const badge=document.getElementById('user-badge');
-    badge.style.display='flex';badge.style.background=bc.bg;badge.style.color=bc.dot;badge.style.borderColor=bc.dot;
-    badge.innerHTML=`<span style="width:8px;height:8px;border-radius:50%;background:${bc.dot};display:inline-block;"></span>${name}`;
-  },2200);
+  },1500);
 }
 
 // CONFLICT
@@ -646,7 +649,13 @@ function showLogin(){
     });
   });
 }
-function selectUser(name){currentUser=name;launchConfetti(name);}
+function selectUser(name){
+  currentUser=name;
+  // Cache login immédiatement
+  document.getElementById('login-screen').classList.add('hidden');
+  // Lance confettis + message sur la plateforme
+  launchConfetti(name);
+}
 function switchUser(){document.getElementById('login-screen').classList.remove('hidden');document.getElementById('user-badge').style.display='none';}
 
 // INIT
