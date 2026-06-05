@@ -183,12 +183,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .login-subtitle{font-size:11px;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:32px;}
 .login-grid{display:flex;flex-wrap:wrap;gap:14px;width:100%;max-width:480px;justify-content:center;}
 .login-row{display:contents;}
-.login-card{background:var(--white);border:1.5px solid var(--border);border-radius:18px;padding:20px 16px;text-align:center;cursor:pointer;width:120px;flex-shrink:0;opacity:0;transform:translateY(20px) scale(0.92);animation:cardIn 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards;}
-@keyframes cardIn{to{opacity:1;transform:translateY(0) scale(1);}}
-.login-card:hover{border-color:var(--accent);transform:translateY(-3px) scale(1.04);box-shadow:0 8px 24px rgba(28,74,46,0.12);transition:all 0.2s;}
-.login-card:active{transform:scale(0.96);}
+.login-card{background:var(--white);border:1.5px solid var(--border);border-radius:18px;padding:20px 16px;text-align:center;cursor:pointer;width:120px;flex-shrink:0;opacity:0;transform:translateY(24px) scale(0.9);transition:border-color 0.2s,box-shadow 0.2s,transform 0.2s;}
+.login-card.visible{opacity:1;transform:translateY(0) scale(1);}
+.login-card:hover{border-color:var(--accent);transform:translateY(-3px) scale(1.05) !important;box-shadow:0 8px 24px rgba(28,74,46,0.13);}
+.login-card:active{transform:scale(0.96) !important;}
 .login-avatar{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;margin:0 auto 10px;letter-spacing:0.02em;transition:transform 0.2s;}
-.login-card:hover .login-avatar{transform:scale(1.1);}
+.login-card:hover .login-avatar{transform:scale(1.12);}
 .login-name{font-size:12px;font-weight:500;color:var(--text);}
 
 /* CONFETTI TRANSITION */
@@ -632,8 +632,19 @@ function showLogin(){
   const src = ANIMS.length>0 ? ANIMS : DEF_ANIMS.map((a,i)=>({...a,id:'def-'+i}));
   const grid=document.getElementById('login-grid');
   if(!grid)return;
-  grid.innerHTML=src.map((a,i)=>`<div class="login-card" onclick="selectUser('${a.name}')" style="animation-delay:${i*0.06}s"><div class="login-avatar" style="background:${a.color_bg};color:${a.color_dot};">${ini(a.name)}</div><div class="login-name">${a.name}</div></div>`).join('');
+  grid.innerHTML=src.map((a,i)=>`<div class="login-card" data-i="${i}" onclick="selectUser('${a.name}')"><div class="login-avatar" style="background:${a.color_bg};color:${a.color_dot};">${ini(a.name)}</div><div class="login-name">${a.name}</div></div>`).join('');
   document.getElementById('login-screen').classList.remove('hidden');
+  // Force JS animation for Chrome compatibility
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      grid.querySelectorAll('.login-card').forEach((card,i)=>{
+        setTimeout(()=>{
+          card.style.transition='opacity 0.35s cubic-bezier(0.34,1.4,0.64,1), transform 0.4s cubic-bezier(0.34,1.4,0.64,1)';
+          card.classList.add('visible');
+        }, i*70);
+      });
+    });
+  });
 }
 function selectUser(name){currentUser=name;launchConfetti(name);}
 function switchUser(){document.getElementById('login-screen').classList.remove('hidden');document.getElementById('user-badge').style.display='none';}
