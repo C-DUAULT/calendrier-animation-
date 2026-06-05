@@ -627,16 +627,17 @@ async function delAnim(id,name){DATA.forEach(d=>{if(d.animateur===name){d.animat
 
 // LOGIN
 function showLogin(){
+  const src = ANIMS.length>0 ? ANIMS : DEF_ANIMS.map((a,i)=>({...a,id:'def-'+i}));
   const grid=document.getElementById('login-grid');
+  if(!grid)return;
   const rows=[];
   const perRow=2;
-  for(let i=0;i<ANIMS.length;i+=perRow){
-    const chunk=ANIMS.slice(i,i+perRow);
-    const isLast=i+perRow>=ANIMS.length;
-    const isOdd=ANIMS.length%perRow!==0&&isLast;
+  for(let i=0;i<src.length;i+=perRow){
+    const chunk=src.slice(i,i+perRow);
+    const isOdd=src.length%perRow!==0&&(i+perRow>=src.length);
     rows.push(`<div class="login-row" style="${isOdd?'justify-content:center;':''}">${chunk.map(a=>`<div class="login-card" onclick="selectUser('${a.name}')"><div class="login-avatar" style="background:${a.color_bg};color:${a.color_dot};">${ini(a.name)}</div><div class="login-name">${a.name}</div></div>`).join('')}</div>`);
   }
-  grid.innerHTML=rows.join('');
+  grid.innerHTML=rows.length?rows.join(''):'<div style="color:var(--text-muted);font-size:13px;">Aucun animateur</div>';
   document.getElementById('login-screen').classList.remove('hidden');
 }
 function selectUser(name){currentUser=name;launchConfetti(name);}
@@ -649,6 +650,11 @@ async function init(){
   DATA=DEF_EVENTS.map((d,i)=>({...d,id:'def-'+i}));
   buildDrawer();renderGeneral();renderRappels();
   showLogin();
+  // Failsafe: si le login-grid est vide après 200ms, on reforce
+  setTimeout(()=>{
+    const grid=document.getElementById('login-grid');
+    if(grid&&(!grid.children.length||grid.textContent.includes('Chargement')))showLogin();
+  },200);
 
   // Supabase en arrière-plan avec timeout 5s
   const sbLoad = async () => {
