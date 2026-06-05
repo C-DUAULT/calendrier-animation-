@@ -31,8 +31,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 .dsub{font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;}
 .dsec{padding:12px 0;}
 .dlbl{font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--faint);padding:0 20px;margin-bottom:4px;}
-.ni{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;font-size:14px;color:var(--muted);border-left:3px solid transparent;transition:all 0.15s;}
+.ni{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;font-size:14px;color:var(--muted);border-left:3px solid transparent;transition:all 0.15s;flex-direction:column;align-items:flex-start;padding-left:20px;}
+.ni{flex-direction:row;align-items:center;}
 .ni.active{color:var(--acc);background:var(--accl);border-left-color:var(--acc);font-weight:500;}
+.ni-sub{font-size:10px;color:var(--faint);margin-top:1px;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;}
 .nav-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
 .dfoot{margin-top:auto;padding:16px 20px;border-top:1px solid var(--bl);font-size:10px;color:var(--text);font-weight:600;letter-spacing:0.04em;}
 .main{padding-top:58px;padding-bottom:88px;min-height:100vh;}
@@ -120,16 +122,24 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 .cfbg.show{display:block;}
 .cfpop{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.88);background:var(--white);border-radius:20px;padding:28px 24px;width:300px;max-width:90vw;z-index:710;text-align:center;opacity:0;pointer-events:none;transition:all 0.22s;}
 .cfpop.show{opacity:1;pointer-events:all;transform:translate(-50%,-50%) scale(1);}
-.notif-overlay{position:fixed;inset:0;background:rgba(10,20,12,0.6);z-index:800;display:none;align-items:center;justify-content:center;}
+.notif-overlay{position:fixed;inset:0;background:rgba(10,20,12,0.65);z-index:800;display:none;align-items:center;justify-content:center;padding:20px;}
 .notif-overlay.open{display:flex;}
-.notif-box{background:var(--white);border-radius:22px;padding:28px 24px;width:320px;max-width:92vw;text-align:center;animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1);}
+.notif-box{background:var(--white);border-radius:22px;padding:28px 24px;width:100%;max-width:340px;text-align:center;animation:popIn 0.35s cubic-bezier(0.34,1.56,0.64,1);}
 @keyframes popIn{from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1;}}
-.notif-icon{font-size:48px;margin-bottom:12px;}
-.notif-title{font-family:"DM Serif Display",serif;font-size:22px;color:var(--acc);margin-bottom:6px;}
-.notif-sub{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
-.notif-btns{display:flex;flex-direction:column;gap:10px;}
+.notif-btns{display:flex;flex-direction:column;gap:8px;}
 .notif-btns .btn{padding:13px;}
-.notif-alt{margin-top:8px;}
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.home-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;transition:all 0.15s;}
+.home-card:active{transform:scale(0.97);}
+.home-card-accent{border-left:3px solid var(--acc);}
+.home-card-warn{border-left:3px solid var(--war);}
+.home-card-full{grid-column:1/-1;}
+.home-card-icon{font-size:22px;margin-bottom:6px;}
+.home-card-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px;}
+.home-card-val{font-family:"DM Serif Display",serif;font-size:22px;color:var(--acc);line-height:1.1;}
+.home-card-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+.home-podium{display:flex;gap:12px;justify-content:center;margin-top:8px;}
+.home-podium-item{text-align:center;flex:1;}
 .lscr{position:fixed;inset:0;background:var(--bg);z-index:900;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
 .lscr.hidden{display:none;}
 .llogo{height:52px;width:auto;margin-bottom:16px;}
@@ -164,6 +174,9 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 .chat-input-row{display:flex;gap:8px;padding-top:12px;border-top:1px solid var(--border);margin-top:8px;}
 .chat-input-row input{flex:1;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:15px;font-family:"DM Sans",sans-serif;background:var(--surface);outline:none;}
 .chat-input-row input:focus{border-color:var(--accm);}
+.snake-scores{border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.snake-score-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);}
+.snake-score-row:last-child{border-bottom:none;}
 </style>
 </head>
 <body>
@@ -187,20 +200,18 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 
 <div class="notif-overlay" id="notif-overlay">
   <div class="notif-box">
-    <div class="notif-icon">&#127881;</div>
-    <div class="notif-title">Nouvelle animation !</div>
-    <div class="notif-sub">
-      <strong id="notif-lieu"></strong><br>
-      Le <strong id="notif-date"></strong><br>
-      <span id="notif-slot"></span>
+    <div style="font-size:48px;margin-bottom:12px;">&#127881;</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--acc);margin-bottom:6px;">Nouvelle animation !</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;">
+      <strong id="notif-lieu"></strong><br>Le <strong id="notif-date"></strong><br><span id="notif-slot"></span>
     </div>
     <input type="hidden" id="notif-id">
     <div class="notif-btns">
       <button class="btn btnp" onclick="respondNotif('oui')">&#9989; Oui, je suis dispo !</button>
-      <button class="btn btns" onclick="toggleAltDate(true);this.style.display='none'">&#129300; Peut-etre — proposer une autre date</button>
+      <button class="btn btns notif-maybe-btn" onclick="toggleAltDate(true);this.style.display='none'">&#129300; Peut-etre — autre date ?</button>
       <button class="btn btnd" onclick="respondNotif('non')">&#10060; Non, je ne peux pas</button>
     </div>
-    <div class="notif-alt" id="notif-altdate-wrap" style="display:none;">
+    <div id="notif-altdate-wrap" style="display:none;">
       <div class="field" style="margin-top:12px;text-align:left;">
         <label>Autre date proposee</label>
         <input type="date" id="notif-altdate">
@@ -230,7 +241,11 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="dsec">
     <div class="dlbl">Navigation</div>
-    <div class="ni active" id="n-gen" onclick="navTo('gen',this)">
+    <div class="ni active" id="n-home" onclick="navTo('home',this)">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Accueil
+    </div>
+    <div class="ni" id="n-gen" onclick="navTo('gen',this)">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Planning general
     </div>
@@ -238,16 +253,16 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       Rappels <span id="adot" style="display:none;width:7px;height:7px;border-radius:50%;background:#c0392b;margin-left:auto;"></span>
     </div>
+    <div class="ni" id="n-chat" onclick="navTo('chat',this)">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div><div>Chat equipe</div><div class="ni-sub" id="chat-nav-preview"></div></div>
+    </div>
     <div class="ni" id="n-adm" onclick="navTo('adm',this)">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       Administration
     </div>
-    <div class="ni" id="n-chat" onclick="navTo('chat',this)">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Chat equipe
-    </div>
     <div class="ni" id="n-snake" onclick="navTo('snake',this)">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
       &#127847; Snake NOA
     </div>
   </div>
@@ -259,7 +274,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 </nav>
 
 <main class="main"><div class="cnt">
-  <div id="v-gen" class="view active"></div>
+  <div id="v-home" class="view active"></div>
+  <div id="v-gen" class="view"></div>
   <div id="v-rap" class="view"></div>
   <div id="v-adm" class="view"></div>
   <div id="v-anim" class="view"></div>
@@ -268,7 +284,11 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 </div></main>
 
 <nav class="bnav">
-  <button class="bni active" id="b-gen" onclick="navTo('gen',null,'gen')">
+  <button class="bni active" id="b-home" onclick="navTo('home',null,'home')">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Accueil
+  </button>
+  <button class="bni" id="b-gen" onclick="navTo('gen',null,'gen')">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     Planning
   </button>
@@ -334,52 +354,48 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 </div>
 
 <div class="toastEl" id="toastEl"></div>
-<script>const SB = 'https://lwumkmywtjsogpbkczdk.supabase.co';
-const SK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3dW1rbXl3dGpzb2dwYmtjemRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NzQxOTksImV4cCI6MjA5NjE1MDE5OX0.7AQQXbdhKjJ6F973hGaQdJ2U-L6wGA-xfp7blgGqerk';
-const DAYS = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-const MNS  = ['Janvier','Fevrier','Mars','Avril','Mai','Juin','Juillet','Aout','Septembre','Octobre','Novembre','Decembre'];
-const COLS = [
-  {name:'vert',  dot:'#1c4a2e', bg:'#e4ede6'},
-  {name:'bleu',  dot:'#1a3a8a', bg:'#e4ecfb'},
-  {name:'rose',  dot:'#8a1a4a', bg:'#fbe8f0'},
-  {name:'sauge', dot:'#3a6e18', bg:'#eaf4e2'},
-  {name:'ambre', dot:'#7a3e0a', bg:'#faf0e3'},
-  {name:'violet',dot:'#4a2e8a', bg:'#eeebfb'},
-  {name:'teal',  dot:'#0f6e6e', bg:'#e2f4f4'},
-  {name:'corail',dot:'#993c1d', bg:'#faece7'}
+<script>const SB='https://lwumkmywtjsogpbkczdk.supabase.co';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3dW1rbXl3dGpzb2dwYmtjemRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NzQxOTksImV4cCI6MjA5NjE1MDE5OX0.7AQQXbdhKjJ6F973hGaQdJ2U-L6wGA-xfp7blgGqerk';
+const DAYS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const MNS=['Janvier','Fevrier','Mars','Avril','Mai','Juin','Juillet','Aout','Septembre','Octobre','Novembre','Decembre'];
+const COLS=[
+  {name:'vert',dot:'#1c4a2e',bg:'#e4ede6'},{name:'bleu',dot:'#1a3a8a',bg:'#e4ecfb'},
+  {name:'rose',dot:'#8a1a4a',bg:'#fbe8f0'},{name:'sauge',dot:'#3a6e18',bg:'#eaf4e2'},
+  {name:'ambre',dot:'#7a3e0a',bg:'#faf0e3'},{name:'violet',dot:'#4a2e8a',bg:'#eeebfb'},
+  {name:'teal',dot:'#0f6e6e',bg:'#e2f4f4'},{name:'corail',dot:'#993c1d',bg:'#faece7'}
 ];
-const DEF_A = [
-  {name:'Clement', color_name:'vert',  color_dot:'#1c4a2e', color_bg:'#e4ede6'},
-  {name:'Solal',   color_name:'bleu',  color_dot:'#1a3a8a', color_bg:'#e4ecfb'},
-  {name:'Nina',    color_name:'rose',  color_dot:'#8a1a4a', color_bg:'#fbe8f0'},
-  {name:'Lily',    color_name:'sauge', color_dot:'#3a6e18', color_bg:'#eaf4e2'},
-  {name:'Pierre',  color_name:'ambre', color_dot:'#7a3e0a', color_bg:'#faf0e3'}
+const DEF_A=[
+  {name:'Clement',color_name:'vert',color_dot:'#1c4a2e',color_bg:'#e4ede6'},
+  {name:'Solal',color_name:'bleu',color_dot:'#1a3a8a',color_bg:'#e4ecfb'},
+  {name:'Nina',color_name:'rose',color_dot:'#8a1a4a',color_bg:'#fbe8f0'},
+  {name:'Lily',color_name:'sauge',color_dot:'#3a6e18',color_bg:'#eaf4e2'},
+  {name:'Pierre',color_name:'ambre',color_dot:'#7a3e0a',color_bg:'#faf0e3'}
 ];
-const DEF_E = [
-  {date:'2026-06-06', lieu:'Salon Gastro Quintin',               animateur:'Clement', format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-06-12', lieu:'Plouharnel Super U',                 animateur:'Clement', format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-06-13', lieu:'Intermarch\u00e9 Tr\u00e9muson',    animateur:'Lily',    format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-06-13', lieu:'Les Bouchees Alexandre Plouharnel',  animateur:'Clement', format:'',             slot:'Anim 2', confirmed:false, note:'', comment:''},
-  {date:'2026-06-19', lieu:'Fouesnant Leclerc',                  animateur:'?',       format:'',             slot:'Anim 1', confirmed:false, note:'', comment:''},
-  {date:'2026-06-26', lieu:'Cave Landerneau Ty Ar Gwin',         animateur:'Pierre',  format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-07-04', lieu:'Les Bouchees Alexandre Plouharnel 56',animateur:'?',      format:'',             slot:'Anim 2', confirmed:false, note:'', comment:''},
-  {date:'2026-07-06', lieu:'Camping St Malo Ville huchet 35',    animateur:'Solal',   format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-07-07', lieu:'Camping Touesse Dinard 35',          animateur:'Solal',   format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-07-08', lieu:'Camping Ble Or St Cast le Guildo 35',animateur:'Solal',   format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-07-09', lieu:'Camping Port Blanc Dinard 35',       animateur:'Solal',   format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-07-10', lieu:'Fouesnant Leclerc 29',               animateur:'Nina',    format:'10-13/14-18',  slot:'Anim 1', confirmed:false, note:'', comment:''},
-  {date:'2026-07-13', lieu:'Camping Le Milin Pabu 22',           animateur:'Solal',   format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-07-14', lieu:'Camping Le Roch Pordic 22',          animateur:'Solal',   format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-07-15', lieu:'Club des Goelands Saint Briac 35',   animateur:'Clement', format:'',             slot:'Anim 2', confirmed:false, note:'DATE A CONFIRMER', comment:''},
-  {date:'2026-07-17', lieu:'Gueule de joie Nantes 44',           animateur:'Nina',    format:'',             slot:'Anim 2', confirmed:false, note:'', comment:''},
-  {date:'2026-07-20', lieu:'Camping St Cado Belz 56',            animateur:'Solal',   format:'',             slot:'Anim 1', confirmed:true,  note:'', comment:''},
-  {date:'2026-08-08', lieu:'Les Bouchees Alexandre Plouharnel 56',animateur:'?',      format:'',             slot:'Anim 1', confirmed:false, note:'', comment:''},
-  {date:'2026-08-14', lieu:'Fouesnant Leclerc 29',               animateur:'?',       format:'',             slot:'Anim 1', confirmed:false, note:'', comment:''}
+const DEF_E=[
+  {date:'2026-06-06',lieu:'Salon Gastro Quintin',animateur:'Clement',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-06-12',lieu:'Plouharnel Super U',animateur:'Clement',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-06-13',lieu:'Intermarch\u00e9 Tr\u00e9muson',animateur:'Lily',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-06-13',lieu:'Les Bouchees Alexandre Plouharnel',animateur:'Clement',format:'',slot:'Anim 2',confirmed:false,note:'',comment:'',notif_seen:false},
+  {date:'2026-06-19',lieu:'Fouesnant Leclerc',animateur:'?',format:'',slot:'Anim 1',confirmed:false,note:'',comment:'',notif_seen:false},
+  {date:'2026-06-26',lieu:'Cave Landerneau Ty Ar Gwin',animateur:'Pierre',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-04',lieu:'Les Bouchees Alexandre Plouharnel 56',animateur:'?',format:'',slot:'Anim 2',confirmed:false,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-06',lieu:'Camping St Malo Ville huchet 35',animateur:'Solal',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-07',lieu:'Camping Touesse Dinard 35',animateur:'Solal',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-08',lieu:'Camping Ble Or St Cast le Guildo 35',animateur:'Solal',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-09',lieu:'Camping Port Blanc Dinard 35',animateur:'Solal',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-10',lieu:'Fouesnant Leclerc 29',animateur:'Nina',format:'10-13/14-18',slot:'Anim 1',confirmed:false,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-13',lieu:'Camping Le Milin Pabu 22',animateur:'Solal',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-14',lieu:'Camping Le Roch Pordic 22',animateur:'Solal',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-15',lieu:'Club des Goelands Saint Briac 35',animateur:'Clement',format:'',slot:'Anim 2',confirmed:false,note:'DATE A CONFIRMER',comment:'',notif_seen:false},
+  {date:'2026-07-17',lieu:'Gueule de joie Nantes 44',animateur:'Nina',format:'',slot:'Anim 2',confirmed:false,note:'',comment:'',notif_seen:false},
+  {date:'2026-07-20',lieu:'Camping St Cado Belz 56',animateur:'Solal',format:'',slot:'Anim 1',confirmed:true,note:'',comment:'',notif_seen:false},
+  {date:'2026-08-08',lieu:'Les Bouchees Alexandre Plouharnel 56',animateur:'?',format:'',slot:'Anim 1',confirmed:false,note:'',comment:'',notif_seen:false},
+  {date:'2026-08-14',lieu:'Fouesnant Leclerc 29',animateur:'?',format:'',slot:'Anim 1',confirmed:false,note:'',comment:'',notif_seen:false}
 ];
 
-let ANIMS=[], DATA=[], MSGS=[];
-let curtab='gen', curAnim=null, curUser=null, sbOk=false;
-let chatPoll=null;
+let ANIMS=[],DATA=[],MSGS=[],SCORES=[];
+let curtab='home',curAnim=null,curUser=null,sbOk=false;
+let chatPoll=null,snakeInterval=null,snakeState=null;
 
 // ── HELPERS ───────────────────────────────────────────────────────────────
 function gM(d){return MNS[parseInt(d.split('-')[1])-1];}
@@ -406,7 +422,7 @@ function hasConflict(anim,date,xid){
   return DATA.some(d=>d.animateur===anim&&d.date===date&&sid(d.id)!==sid(xid));
 }
 function showConflict(anim,date){
-  document.getElementById('cfmsg').textContent=`${anim} a deja une animation le ${fD(date)}. Impossible d en ajouter une autre ce jour-la.`;
+  document.getElementById('cfmsg').textContent=`${anim} a deja une animation le ${fD(date)}. Impossible d en ajouter une autre.`;
   document.getElementById('cfpop').classList.add('show');
   document.getElementById('cfbg').classList.add('show');
 }
@@ -419,10 +435,21 @@ function closeConflict(){
 function toggleD(){['drw','dov','hbg'].forEach(id=>document.getElementById(id).classList.toggle('open'));}
 function closeD(){['drw','dov','hbg'].forEach(id=>document.getElementById(id).classList.remove('open'));}
 function buildDrawer(){
+  // Last chat message preview
+  const lastMsg=MSGS.length>0?MSGS[MSGS.length-1]:null;
+  const chatPreview=lastMsg?`<div class="drawer-chat-preview">${lastMsg.author}: ${lastMsg.content.substring(0,28)}${lastMsg.content.length>28?'...':''}</div>`:'';
+
   document.getElementById('danims').innerHTML=ANIMS.map(a=>{
     const ac=curtab===`anim-${a.name}`?' active':'';
     return `<div class="ni${ac}" onclick="navToAnim('${a.name}',this)"><div class="nav-av" style="background:${a.color_bg};color:${a.color_dot};">${ini(a.name)}</div>${a.name}</div>`;
   }).join('');
+
+  // Update chat preview in nav
+  const chatNav=document.getElementById('n-chat');
+  if(chatNav){
+    const preview=document.getElementById('chat-nav-preview');
+    if(preview&&lastMsg)preview.textContent=`${lastMsg.author}: ${lastMsg.content.substring(0,22)}...`;
+  }
 }
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────
@@ -435,13 +462,14 @@ function navTo(id,el,bid){
   if(el)el.classList.add('active');
   if(bid)document.getElementById(`b-${bid}`).classList.add('active');
   closeD();
-  if(id==='gen')renderGen();
+  if(id!=='chat')stopChatPoll();
+  if(id!=='snake')stopSnake();
+  if(id==='home')renderHome();
+  else if(id==='gen')renderGen();
   else if(id==='rap')renderRap();
   else if(id==='adm')renderAdm();
   else if(id==='chat'){renderChat();startChatPoll();}
-  else if(id==='snake')startSnake();
-  if(id!=='chat')stopChatPoll();
-  if(id!=='snake')stopSnake();
+  else if(id==='snake')initSnakeView();
 }
 function navToAnim(name,el){
   curtab=`anim-${name}`;curAnim=name;allV();allN();allB();
@@ -452,7 +480,86 @@ function navToAnim(name,el){
   checkPendingNotif(name);
 }
 
-// ── NOTIFICATION DE CONFIRMATION ──────────────────────────────────────────
+// ── ACCUEIL ───────────────────────────────────────────────────────────────
+function renderHome(){
+  const now=new Date();now.setHours(0,0,0,0);
+  const upcoming=DATA.filter(d=>{const df=dU(d.date);return df>=0&&df<=14;}).sort((a,b)=>a.date.localeCompare(b.date));
+  const nextEv=upcoming[0];
+  const tbd=DATA.filter(d=>d.animateur==='?'||!d.confirmed);
+  const lastMsg=MSGS.length>0?MSGS[MSGS.length-1]:null;
+  const top3=SCORES.slice(0,3);
+  const podiumEmoji=['🥇','🥈','🥉'];
+
+  // Next animateur with event
+  const nextAnimEv=DATA.filter(d=>{const df=dU(d.date);return df>=0&&d.animateur!=='?';}).sort((a,b)=>a.date.localeCompare(b.date))[0];
+  const naC=nextAnimEv?gC(nextAnimEv.animateur):{dot:'#888',bg:'#eee'};
+
+  let h=`<div style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--acc);margin-bottom:4px;">Bonjour ${curUser||'!'}</div>
+  <div style="font-size:12px;color:var(--muted);margin-bottom:20px;letter-spacing:0.04em;">${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</div>
+  <div class="home-grid">`;
+
+  // Card: prochain evenement
+  h+=`<div class="home-card home-card-accent" onclick="navTo('rap',null,'rap')">
+    <div class="home-card-icon">📅</div>
+    <div class="home-card-label">Prochain evenement</div>
+    ${nextEv?`<div class="home-card-val">${fD(nextEv.date)}</div><div class="home-card-sub">${nextEv.lieu}</div>`:
+    '<div class="home-card-val">Aucun</div>'}
+  </div>`;
+
+  // Card: a decerner
+  h+=`<div class="home-card ${tbd.length>0?'home-card-warn':''}" onclick="navTo('rap',null,'rap')">
+    <div class="home-card-icon">⚠️</div>
+    <div class="home-card-label">A decerner</div>
+    <div class="home-card-val" style="${tbd.length>0?'color:var(--war);':''}">${tbd.length}</div>
+    <div class="home-card-sub">animation${tbd.length>1?'s':''} sans animateur</div>
+  </div>`;
+
+  // Card: prochain animateur
+  h+=`<div class="home-card" onclick="${nextAnimEv?`navToAnim('${nextAnimEv.animateur}',null)`:''}">
+    <div class="home-card-icon">🎪</div>
+    <div class="home-card-label">Prochain sur scene</div>
+    ${nextAnimEv?`<div style="display:flex;align-items:center;gap:8px;margin-top:4px;"><div style="width:32px;height:32px;border-radius:50%;background:${naC.bg};color:${naC.dot};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">${ini(nextAnimEv.animateur)}</div><div><div class="home-card-val" style="font-size:16px;">${nextAnimEv.animateur}</div><div class="home-card-sub">${fD(nextAnimEv.date)}</div></div></div>`:
+    '<div class="home-card-val">Aucun</div>'}
+  </div>`;
+
+  // Card: rappels 14j
+  h+=`<div class="home-card" onclick="navTo('rap',null,'rap')">
+    <div class="home-card-icon">🔔</div>
+    <div class="home-card-label">Rappels 14 jours</div>
+    <div class="home-card-val">${upcoming.length}</div>
+    <div class="home-card-sub">animation${upcoming.length>1?'s':''} a venir</div>
+  </div>`;
+
+  // Card: chat dernier message (full width)
+  h+=`<div class="home-card home-card-full" onclick="navTo('chat',null,'chat')">
+    <div class="home-card-icon">💬</div>
+    <div class="home-card-label">Dernier message</div>
+    ${lastMsg?`<div class="home-card-val" style="font-size:14px;">${lastMsg.author}</div><div class="home-card-sub" style="font-style:italic;">"${lastMsg.content.substring(0,60)}${lastMsg.content.length>60?'...':''}"</div>`:
+    '<div class="home-card-sub">Aucun message. Soyez le premier !</div>'}
+  </div>`;
+
+  // Card: podium snake (full width)
+  h+=`<div class="home-card home-card-full" onclick="navTo('snake',null,'snake')">
+    <div class="home-card-icon">🐍</div>
+    <div class="home-card-label">Podium Snake NOA</div>
+    ${top3.length>0?`<div class="home-podium">
+      ${top3.map((s,i)=>{
+        const c=gC(s.player);
+        return `<div class="home-podium-item">
+          <div style="font-size:22px;">${podiumEmoji[i]}</div>
+          <div class="nav-av" style="width:34px;height:34px;font-size:12px;background:${c.bg};color:${c.dot};margin:4px auto;">${ini(s.player)}</div>
+          <div style="font-size:11px;font-weight:600;color:var(--acc);">${s.player}</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);">${s.score} pts</div>
+        </div>`;
+      }).join('')}
+    </div>`:'<div class="home-card-sub">Soyez le premier a jouer !</div>'}
+  </div>`;
+
+  h+='</div>';
+  document.getElementById('v-home').innerHTML=h;
+}
+
+// ── NOTIFICATION ──────────────────────────────────────────────────────────
 function checkPendingNotif(name){
   const pending=DATA.filter(d=>d.animateur===name&&d.confirmed===false&&!d.notif_seen&&dU(d.date)>=0);
   if(pending.length>0)showAnimNotif(pending[0]);
@@ -464,6 +571,8 @@ function showAnimNotif(ev){
   document.getElementById('notif-id').value=sid(ev.id);
   document.getElementById('notif-altdate').value='';
   document.getElementById('notif-altdate-wrap').style.display='none';
+  const btns=document.querySelectorAll('.notif-maybe-btn');
+  btns.forEach(b=>b.style.display='');
   document.getElementById('notif-overlay').classList.add('open');
 }
 async function respondNotif(rep){
@@ -472,10 +581,10 @@ async function respondNotif(rep){
   document.getElementById('notif-overlay').classList.remove('open');
   const idx=DATA.findIndex(d=>sid(d.id)===id);
   if(idx>-1){
-    const msg=rep==='oui'?'Confirme !':rep==='non'?'Refuse':altdate?`Peut-etre le ${fD(altdate)}`:'Peut-etre';
     DATA[idx].notif_seen=true;
-    if(rep==='oui')DATA[idx].confirmed=true;
-    toast(rep==='oui'?'Super, tu es confirme !':rep==='non'?'Pas de souci !':'Reponse envoyee !');
+    if(rep==='oui'){DATA[idx].confirmed=true;toast('Super, tu es confirme !');}
+    else if(rep==='non'){toast('Pas de souci !');}
+    else{toast('Reponse envoyee !');}
     if(sbOk){
       try{
         const upd={notif_seen:true};
@@ -486,7 +595,7 @@ async function respondNotif(rep){
     }
   }
   refresh();
-  const remaining=DATA.filter(d=>d.animateur===curAnim&&d.confirmed===false&&!d.notif_seen&&dU(d.date)>=0);
+  const remaining=DATA.filter(d=>d.animateur===curAnim&&!d.confirmed&&!d.notif_seen&&dU(d.date)>=0);
   if(remaining.length>0)setTimeout(()=>showAnimNotif(remaining[0]),400);
 }
 function toggleAltDate(show){
@@ -514,12 +623,12 @@ function eCard(d,showAnim){
         ${d.note?`<span class="tag tnot">${d.note}</span>`:''}
         ${rem}
       </div>
-      ${d.comment?`<div class="ecmt">&#128172; ${d.comment}</div>`:''}
-      ${d.alt_date?`<div class="ecmt">&#128197; Autre date proposee : ${fD(d.alt_date)}</div>`:''}
+      ${d.comment?`<div class="ecmt">💬 ${d.comment}</div>`:''}
+      ${d.alt_date?`<div class="ecmt">📅 Autre date : ${fD(d.alt_date)}</div>`:''}
     </div>
     <div class="eact">
-      <button class="btn btns btni" onclick="editEv('${sid(d.id)}')">&#9999;&#65039;</button>
-      <button class="btn btnd btni" onclick="askDelEv('${sid(d.id)}','${d.date}')">&#128465;</button>
+      <button class="btn btns btni" onclick="editEv('${sid(d.id)}')">✏️</button>
+      <button class="btn btnd btni" onclick="askDelEv('${sid(d.id)}','${d.date}')">🗑</button>
     </div>
   </div>`;
 }
@@ -549,15 +658,15 @@ function renderRap(){
   const ha=(soon.length+tbd.length)>0;
   document.getElementById('adot').style.display=ha?'inline-block':'none';
   document.getElementById('bdot').style.display=ha?'block':'none';
-  let h='<div class="stitle">&#128276; Dans les 14 prochains jours</div>';
+  let h='<div class="stitle">Dans les 14 prochains jours</div>';
   if(!soon.length)h+='<div class="embox">Aucune animation prochainement</div>';
   else soon.forEach(d=>{
     const df=dU(d.date);const c=gC(d.animateur);
     const b=df<=1?'<span class="tag tj1">J-1</span>':df<=7?`<span class="tag tj7">J-${df}</span>`:`<span class="tag tok">J-${df}</span>`;
     h+=`<div class="rc">${b}<div class="ri"><div class="rl">${d.lieu}</div><div class="rw"><span style="width:6px;height:6px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${d.animateur}</div></div><div class="rd">${fD(d.date)}</div></div>`;
   });
-  h+=`<div class="stitle" style="color:var(--dan);margin-top:24px;">&#9888;&#65039; A decerner (${tbd.length})</div>`;
-  if(!tbd.length)h+='<div class="embox">Tous les creneaux sont attribues &#10003;</div>';
+  h+=`<div class="stitle" style="color:var(--dan);margin-top:24px;">A decerner (${tbd.length})</div>`;
+  if(!tbd.length)h+='<div class="embox">Tous les creneaux sont attribues</div>';
   else tbd.forEach(d=>{h+=`<div class="rc rctbd"><span class="tag ttbd">A decerner</span><div class="ri"><div class="rl">${d.lieu}</div><div class="rw" style="color:var(--war);">${d.animateur}</div></div><div class="rd">${fD(d.date)}</div></div>`;});
   document.getElementById('v-rap').innerHTML=h;
 }
@@ -590,8 +699,8 @@ function renderAdm(){
       <div class="nav-av" style="width:40px;height:40px;font-size:14px;background:${a.color_bg};color:${a.color_dot};">${ini(a.name)}</div>
       <div class="admi"><div class="admn">${a.name}</div><div class="adms">${cnt} animation${cnt!==1?'s':''}</div></div>
       <div class="adma">
-        <button class="btn btns btni" onclick="editPr('${sid(a.id)}')">&#9999;&#65039;</button>
-        <button class="btn btnd btni" onclick="askDelAnim('${sid(a.id)}','${a.name}')">&#128465;</button>
+        <button class="btn btns btni" onclick="editPr('${sid(a.id)}')">✏️</button>
+        <button class="btn btnd btni" onclick="askDelAnim('${sid(a.id)}','${a.name}')">🗑</button>
       </div></div>`;
   });
   h+=`<button class="btn btnp" style="width:100%;margin-bottom:24px;" onclick="openM('pr')">+ Ajouter un animateur</button>`;
@@ -601,21 +710,23 @@ function renderAdm(){
     h+=`<div class="admc">
       <div style="min-width:38px;text-align:center;"><div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--acc);line-height:1;">${dN(d.date)}</div><div style="font-size:9px;color:var(--muted);text-transform:uppercase;">${dNm(d.date)}</div></div>
       <div class="admi"><div class="admn">${d.lieu}</div>
-      <div class="adms" style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;">
-        ${dot(c,d.animateur)}
-        <span class="tag ${d.slot==='Anim 1'?'ts1':'ts2'}">${d.slot}</span>
-        ${!d.confirmed||d.animateur==='?'?'<span class="tag ttbd">A decerner</span>':''}
-      </div></div>
+        <div class="adms" style="display:flex;gap:5px;flex-wrap:wrap;align-items:center;">
+          ${dot(c,d.animateur)}
+          <span class="tag ${d.slot==='Anim 1'?'ts1':'ts2'}">${d.slot}</span>
+          ${!d.confirmed||d.animateur==='?'?'<span class="tag ttbd">A decerner</span>':''}
+        </div>
+      </div>
       <div class="adma">
-        <button class="btn btns btni" onclick="editEv('${sid(d.id)}')">&#9999;&#65039;</button>
-        <button class="btn btnd btni" onclick="askDelEv('${sid(d.id)}','${d.date}')">&#128465;</button>
+        <button class="btn btns btni" onclick="editEv('${sid(d.id)}')">✏️</button>
+        <button class="btn btnd btni" onclick="askDelEv('${sid(d.id)}','${d.date}')">🗑</button>
       </div></div>`;
   });
   document.getElementById('v-adm').innerHTML=h;
 }
 
 function refresh(){
-  if(curtab==='gen')renderGen();
+  if(curtab==='home')renderHome();
+  else if(curtab==='gen')renderGen();
   else if(curtab==='rap')renderRap();
   else if(curtab==='adm')renderAdm();
   else if(curtab==='chat')renderChat();
@@ -687,7 +798,7 @@ async function saveEv(){
   closeM('ev');refresh();
 }
 
-// ── MODAL PROFIL ──────────────────────────────────────────────────────────
+// ── PROFIL ────────────────────────────────────────────────────────────────
 function buildCP(sel){
   document.getElementById('cprow').innerHTML=COLS.map(c=>`<div class="cpopt${c.name===sel?' selected':''}" style="background:${c.dot};" onclick="selCol('${c.name}')" title="${c.name}"></div>`).join('');
   document.getElementById('fpcol').value=sel;
@@ -777,20 +888,20 @@ async function renderChat(){
   });
   h+=`</div>
   <div class="chat-input-row">
-    <input id="chat-input" type="text" placeholder="Message..." onkeydown="if(event.key==='Enter')sendMsg()">
+    <input id="chat-input" type="text" placeholder="${curUser?'Message...':'Connectez-vous pour chatter'}" ${curUser?'':'disabled'} onkeydown="if(event.key==='Enter')sendMsg()">
     <button class="btn btnp" onclick="sendMsg()" style="padding:10px 16px;flex-shrink:0;">Envoyer</button>
   </div>`;
   document.getElementById('v-chat').innerHTML=h;
   const msgs=document.getElementById('chat-msgs');
   if(msgs)msgs.scrollTop=msgs.scrollHeight;
+  buildDrawer();
 }
 async function sendMsg(){
   const input=document.getElementById('chat-input');
-  const content=input.value.trim();
+  const content=input?.value.trim();
   if(!content||!curUser)return;
   const msg={author:curUser,content,created_at:new Date().toISOString()};
-  MSGS.push(msg);
-  input.value='';
+  MSGS.push(msg);input.value='';
   renderChat();
   if(sbOk)try{await sbIns('messages',msg);}catch(e){}
 }
@@ -803,106 +914,200 @@ function startChatPoll(){
 function stopChatPoll(){if(chatPoll){clearInterval(chatPoll);chatPoll=null;}}
 
 // ── SNAKE ─────────────────────────────────────────────────────────────────
-let snakeInterval=null, snakeState=null;
-const GRID=20;
-function stopSnake(){if(snakeInterval){clearInterval(snakeInterval);snakeInterval=null;}}
-function startSnake(){
+const GRID=18;
+const CSIZE=380;
+function stopSnake(){
+  if(snakeInterval){clearInterval(snakeInterval);snakeInterval=null;}
+  document.removeEventListener('keydown',snakeKey);
+}
+
+async function loadScores(){
+  if(sbOk){try{const s=await sbGet('snake_scores','order=score.desc&limit=10&');SCORES=Array.isArray(s)?s:[];}catch(e){}}
+}
+async function saveScore(player,score){
+  if(!sbOk)return;
+  try{
+    const existing=SCORES.find(s=>s.player===player);
+    if(existing){
+      if(score>existing.score){await sbUpd('snake_scores',existing.id,{score});}
+    }else{
+      await sbIns('snake_scores',{player,score});
+    }
+    await loadScores();
+  }catch(e){}
+}
+
+function renderScoreboard(){
+  const podiumEmoji=['🥇','🥈','🥉'];
+  if(!SCORES.length)return '<div style="text-align:center;color:var(--muted);font-size:13px;padding:12px;">Aucun score enregistre</div>';
+  return `<div class="snake-scores">
+    ${SCORES.slice(0,3).map((s,i)=>{
+      const c=gC(s.player);
+      return `<div class="snake-score-row" style="background:${i===0?'var(--accl)':'var(--white)'}">
+        <span style="font-size:18px;">${podiumEmoji[i]||'  '}</span>
+        <div class="nav-av" style="width:28px;height:28px;font-size:10px;background:${c.bg};color:${c.dot};">${ini(s.player)}</div>
+        <span style="flex:1;font-size:13px;font-weight:${i===0?'600':'400'};color:var(--acc);">${s.player}</span>
+        <span style="font-size:14px;font-weight:700;color:var(--text);">${s.score} pts</span>
+      </div>`;
+    }).join('')}
+    ${SCORES.length>3?`<div style="font-size:11px;color:var(--muted);text-align:center;padding:6px;">+${SCORES.length-3} autres joueurs</div>`:''}
+  </div>`;
+}
+
+function initSnakeView(){
+  const SZ=CSIZE/GRID;
   document.getElementById('v-snake').innerHTML=`
-    <div style="display:flex;flex-direction:column;align-items:center;padding:16px;">
-      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--acc);margin-bottom:4px;">Snake NOA</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Evite le nenuphar, mange les pommes !</div>
-      <div id="snake-score" style="font-size:14px;font-weight:600;color:var(--acc);margin-bottom:8px;">Score : 0</div>
-      <canvas id="snake-canvas" width="320" height="320" style="border:2px solid var(--border);border-radius:12px;background:#f5f2ec;touch-action:none;"></canvas>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;width:160px;">
-        <div></div>
-        <button class="btn btns" ontouchstart="snakeDir(0,-1)" onclick="snakeDir(0,-1)" style="padding:10px;font-size:18px;">&#8593;</button>
-        <div></div>
-        <button class="btn btns" ontouchstart="snakeDir(-1,0)" onclick="snakeDir(-1,0)" style="padding:10px;font-size:18px;">&#8592;</button>
-        <button class="btn btns" ontouchstart="snakeDir(0,1)" onclick="snakeDir(0,1)" style="padding:10px;font-size:18px;">&#8595;</button>
-        <button class="btn btns" ontouchstart="snakeDir(1,0)" onclick="snakeDir(1,0)" style="padding:10px;font-size:18px;">&#8594;</button>
+    <div style="display:flex;flex-direction:column;align-items:center;padding:8px;">
+      <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--acc);margin-bottom:2px;">Snake NOA</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;">Evite les nenuphars, mange les pommes !</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;width:${CSIZE}px;margin-bottom:6px;">
+        <div id="snake-score" style="font-size:15px;font-weight:700;color:var(--acc);">Score : 0</div>
+        <div id="snake-best" style="font-size:11px;color:var(--muted);"></div>
       </div>
-      <button class="btn btnp" onclick="initSnake()" style="margin-top:12px;width:100%;">Recommencer</button>
+      <canvas id="snake-canvas" width="${CSIZE}" height="${CSIZE}" style="border:2px solid var(--border);border-radius:14px;background:#f5f2ec;touch-action:none;max-width:100%;"></canvas>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;width:150px;">
+        <div></div>
+        <button class="btn btns" ontouchstart="snakeDir(0,-1);event.preventDefault()" onclick="snakeDir(0,-1)" style="padding:12px;font-size:20px;">↑</button>
+        <div></div>
+        <button class="btn btns" ontouchstart="snakeDir(-1,0);event.preventDefault()" onclick="snakeDir(-1,0)" style="padding:12px;font-size:20px;">←</button>
+        <button class="btn btns" ontouchstart="snakeDir(0,1);event.preventDefault()" onclick="snakeDir(0,1)" style="padding:12px;font-size:20px;">↓</button>
+        <button class="btn btns" ontouchstart="snakeDir(1,0);event.preventDefault()" onclick="snakeDir(1,0)" style="padding:12px;font-size:20px;">→</button>
+      </div>
+      <button class="btn btnp" onclick="initSnake()" style="margin-top:12px;width:${CSIZE}px;max-width:100%;">▶ Jouer / Recommencer</button>
+      <div style="margin-top:16px;width:${CSIZE}px;max-width:100%;">
+        <div style="font-family:'DM Serif Display',serif;font-size:16px;color:var(--acc);margin-bottom:8px;display:flex;align-items:center;gap:6px;">🏆 Classement</div>
+        <div id="snake-scoreboard">${renderScoreboard()}</div>
+      </div>
     </div>`;
-  initSnake();
+  // Show best score for current user
+  if(curUser){
+    const myBest=SCORES.find(s=>s.player===curUser);
+    const el=document.getElementById('snake-best');
+    if(el&&myBest)el.textContent=`Ton record : ${myBest.score} pts`;
+  }
   document.addEventListener('keydown',snakeKey);
 }
+
+function randPos(snake,traps){
+  let pos;
+  do{pos={x:Math.floor(Math.random()*GRID),y:Math.floor(Math.random()*GRID)};}
+  while(snake&&snake.some(p=>p.x===pos.x&&p.y===pos.y)||traps&&traps.some(t=>t.x===pos.x&&t.y===pos.y));
+  return pos;
+}
+
 function initSnake(){
-  const SIZE=320/GRID;
+  const snake=[{x:9,y:9},{x:8,y:9},{x:7,y:9}];
+  const traps=[randPos(snake,[]),randPos(snake,[]),randPos(snake,[])];
   snakeState={
-    snake:[{x:10,y:10},{x:9,y:10},{x:8,y:10}],
-    dir:{x:1,y:0},nextDir:{x:1,y:0},
-    apple:randPos(),
-    traps:[randPos(),randPos()],
-    score:0,running:true,size:SIZE
+    snake,dir:{x:1,y:0},nextDir:{x:1,y:0},
+    apple:randPos(snake,traps),traps,
+    score:0,running:true,sz:CSIZE/GRID
   };
   stopSnake();
-  snakeInterval=setInterval(snakeTick,120);
+  snakeInterval=setInterval(snakeTick,110);
   snakeDraw();
 }
-function randPos(){return {x:Math.floor(Math.random()*GRID),y:Math.floor(Math.random()*GRID)};}
-function snakeDir(dx,dy){if(snakeState&&snakeState.running)snakeState.nextDir={x:dx,y:dy};}
+
+function snakeDir(dx,dy){
+  if(snakeState&&snakeState.running)snakeState.nextDir={x:dx,y:dy};
+}
 function snakeKey(e){
   const map={'ArrowUp':[0,-1],'ArrowDown':[0,1],'ArrowLeft':[-1,0],'ArrowRight':[1,0]};
   if(map[e.key]){e.preventDefault();snakeDir(...map[e.key]);}
 }
+
 function snakeTick(){
   if(!snakeState||!snakeState.running)return;
   const s=snakeState;
   if(!(s.nextDir.x===-s.dir.x&&s.nextDir.y===-s.dir.y))s.dir=s.nextDir;
   const head={x:s.snake[0].x+s.dir.x,y:s.snake[0].y+s.dir.y};
-  if(head.x<0||head.x>=GRID||head.y<0||head.y>=GRID||s.snake.some(p=>p.x===head.x&&p.y===head.y)){snakeGameOver();return;}
+  if(head.x<0||head.x>=GRID||head.y<0||head.y>=GRID){snakeGameOver();return;}
+  if(s.snake.some(p=>p.x===head.x&&p.y===head.y)){snakeGameOver();return;}
   if(s.traps.some(t=>t.x===head.x&&t.y===head.y)){snakeGameOver();return;}
   s.snake.unshift(head);
   if(head.x===s.apple.x&&head.y===s.apple.y){
-    s.score++;s.apple=randPos();
-    document.getElementById('snake-score').textContent='Score : '+s.score;
+    s.score++;
+    const el=document.getElementById('snake-score');
+    if(el)el.textContent='Score : '+s.score;
+    s.apple=randPos(s.snake,s.traps);
+    // Every 5 points add a trap
+    if(s.score%5===0)s.traps.push(randPos(s.snake,s.traps));
   }else{s.snake.pop();}
   snakeDraw();
 }
-function snakeGameOver(){
+
+async function snakeGameOver(){
+  if(!snakeState)return;
   snakeState.running=false;stopSnake();
+  const score=snakeState.score;
   const canvas=document.getElementById('snake-canvas');
   if(!canvas)return;
   const ctx=canvas.getContext('2d');
-  ctx.fillStyle='rgba(28,74,46,0.75)';
-  ctx.fillRect(0,0,320,320);
+  ctx.fillStyle='rgba(28,74,46,0.82)';
+  ctx.fillRect(0,0,CSIZE,CSIZE);
   ctx.fillStyle='#fff';
-  ctx.font='bold 22px DM Serif Display,serif';
-  ctx.textAlign='center';
-  ctx.fillText('Game Over !',160,140);
-  ctx.font='16px DM Sans,sans-serif';
-  ctx.fillText('Score : '+snakeState.score,160,170);
-  ctx.font='13px DM Sans,sans-serif';
-  ctx.fillText('Appuie sur Recommencer',160,200);
+  ctx.font=`bold 24px 'DM Serif Display',serif`;
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('Game Over !',CSIZE/2,CSIZE/2-30);
+  ctx.font=`18px 'DM Sans',sans-serif`;
+  ctx.fillText(`Score : ${score}`,CSIZE/2,CSIZE/2+5);
+  ctx.font=`13px 'DM Sans',sans-serif`;
+  ctx.fillStyle='rgba(255,255,255,0.7)';
+  ctx.fillText('Appuie sur Jouer pour recommencer',CSIZE/2,CSIZE/2+35);
+  if(curUser&&score>0){
+    await saveScore(curUser,score);
+    const sb=document.getElementById('snake-scoreboard');
+    if(sb)sb.innerHTML=renderScoreboard();
+    const bel=document.getElementById('snake-best');
+    if(bel){const myBest=SCORES.find(s=>s.player===curUser);if(myBest)bel.textContent=`Ton record : ${myBest.score} pts`;}
+  }
 }
+
 function snakeDraw(){
   const canvas=document.getElementById('snake-canvas');
-  if(!canvas)return;
+  if(!canvas||!snakeState)return;
   const ctx=canvas.getContext('2d');
   const s=snakeState;
-  const SZ=s.size;
-  ctx.clearRect(0,0,320,320);
-  ctx.fillStyle='#f5f2ec';ctx.fillRect(0,0,320,320);
+  const SZ=s.sz;
+  ctx.clearRect(0,0,CSIZE,CSIZE);
+  // Grid dots
+  ctx.fillStyle='rgba(28,74,46,0.06)';
+  for(let x=0;x<GRID;x++)for(let y=0;y<GRID;y++){
+    ctx.beginPath();ctx.arc(x*SZ+SZ/2,y*SZ+SZ/2,1,0,Math.PI*2);ctx.fill();
+  }
   // Apple
-  ctx.font=`${SZ-2}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('&#127822;'.replace('&#127822;','\uD83C\uDF4E'),s.apple.x*SZ+SZ/2,s.apple.y*SZ+SZ/2);
+  ctx.font=`${SZ-4}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('\uD83C\uDF4E',s.apple.x*SZ+SZ/2,s.apple.y*SZ+SZ/2+1);
   // Traps - nenuphar
   s.traps.forEach(t=>{
     ctx.fillStyle='#1c4a2e';
     ctx.beginPath();ctx.arc(t.x*SZ+SZ/2,t.y*SZ+SZ/2,SZ/2-2,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#e4ede6';ctx.font=`${SZ-4}px serif`;
+    ctx.fillStyle='#a8d8b0';
+    ctx.font=`bold ${SZ-6}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText('N',t.x*SZ+SZ/2,t.y*SZ+SZ/2+1);
   });
-  // Snake
+  // Snake body
   s.snake.forEach((p,i)=>{
-    ctx.fillStyle=i===0?'#1c4a2e':'#2d6b42';
+    const ratio=1-i/s.snake.length*0.5;
+    ctx.fillStyle=i===0?'#1c4a2e':`rgba(45,107,66,${ratio})`;
     ctx.beginPath();
-    ctx.roundRect(p.x*SZ+1,p.y*SZ+1,SZ-2,SZ-2,i===0?6:4);
+    const r=i===0?SZ/2-1:SZ/2-2;
+    ctx.roundRect(p.x*SZ+1,p.y*SZ+1,SZ-2,SZ-2,r);
     ctx.fill();
     if(i===0){
+      // Eyes
+      const ex=s.dir.x,ey=s.dir.y;
       ctx.fillStyle='#fff';
-      ctx.beginPath();ctx.arc(p.x*SZ+SZ*0.35,p.y*SZ+SZ*0.35,2,0,Math.PI*2);ctx.fill();
-      ctx.beginPath();ctx.arc(p.x*SZ+SZ*0.65,p.y*SZ+SZ*0.35,2,0,Math.PI*2);ctx.fill();
+      const eyeOff=SZ*0.22;
+      const eyeX1=p.x*SZ+SZ/2+(ey!==0?-eyeOff:ex*SZ*0.2);
+      const eyeY1=p.y*SZ+SZ/2+(ex!==0?-eyeOff:ey*SZ*0.2);
+      const eyeX2=p.x*SZ+SZ/2+(ey!==0?eyeOff:ex*SZ*0.2);
+      const eyeY2=p.y*SZ+SZ/2+(ex!==0?eyeOff:ey*SZ*0.2);
+      ctx.beginPath();ctx.arc(eyeX1,eyeY1,2.5,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(eyeX2,eyeY2,2.5,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#1c4a2e';
+      ctx.beginPath();ctx.arc(eyeX1+ex*1,eyeY1+ey*1,1.2,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.arc(eyeX2+ex*1,eyeY2+ey*1,1.2,0,Math.PI*2);ctx.fill();
     }
   });
 }
@@ -933,7 +1138,7 @@ function selectUser(name){
   setTimeout(()=>launchConfetti(name),50);
 }
 function switchUser(){
-  stopSnake();stopChatPoll();
+  stopSnake();stopChatPoll();curUser=null;
   document.getElementById('lscr').classList.remove('hidden');
   document.getElementById('ubadge').style.display='none';
 }
@@ -948,8 +1153,7 @@ function launchConfetti(name){
   const cols=[c.dot,c.bg,'#f5f2ec','#1c4a2e','#e4ede6','#faf0e3','#fff','#2d6b42','#a8d8b0'];
   for(let i=0;i<180;i++){
     const el=document.createElement('div');el.className='cft';
-    const sz=Math.random()*13+4;
-    const sh=Math.random();
+    const sz=Math.random()*13+4;const sh=Math.random();
     el.style.cssText=`left:${Math.random()*110-5}vw;top:-30px;width:${sz}px;height:${sz}px;background:${cols[Math.floor(Math.random()*cols.length)]};border-radius:${sh>0.6?'50%':sh>0.3?'2px':'50% 0'};animation-duration:${Math.random()*1.5+1.8}s;animation-delay:${Math.random()*0.6}s;opacity:1;`;
     scr.appendChild(el);
   }
@@ -960,15 +1164,17 @@ function launchConfetti(name){
 // ── INIT ──────────────────────────────────────────────────────────────────
 async function init(){
   ANIMS=DEF_A.map((a,i)=>({...a,id:`d-${i}`}));
-  DATA=DEF_E.map((d,i)=>({...d,id:`d-${i}`,notif_seen:false}));
+  DATA=DEF_E.map((d,i)=>({...d,id:`d-${i}`}));
   buildDrawer();renderGen();renderRap();
   showLogin();
   try{
     let anims=await sbGet('animateurs');
     let events=await sbGet('animations');
     if(anims.length===0){for(const a of DEF_A)await sbIns('animateurs',a);anims=await sbGet('animateurs');}
-    if(events.length===0){for(const e of DEF_E)await sbIns('animations',{...e,notif_seen:false});events=await sbGet('animations');}
+    if(events.length===0){for(const e of DEF_E)await sbIns('animations',{...e});events=await sbGet('animations');}
     ANIMS=anims;DATA=events;sbOk=true;
+    await loadScores();
+    try{MSGS=await sbGet('messages','order=created_at&');}catch(e){}
     buildDrawer();refresh();
     if(!document.getElementById('lscr').classList.contains('hidden'))showLogin();
   }catch(e){console.warn('Mode hors-ligne');}
