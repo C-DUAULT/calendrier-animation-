@@ -322,6 +322,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="field"><label>Plage horaire</label><input type="text" id="f-format" placeholder="ex : 10-13 / 14-18"></div>
     <div class="field"><label>Créneau</label><select id="f-slot"><option value="Anim 1">Animation 1</option><option value="Anim 2">Animation 2</option></select></div>
     <div class="field"><label>Statut</label><select id="f-confirmed"><option value="1">Confirmé</option><option value="0">À confirmer</option></select></div>
+    <div class="field"><label>💬 Commentaire</label><input type="text" id="f-comment" placeholder="ex : Apporter le matériel promo..."></div>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="closeModal('event')">Annuler</button>
       <button class="btn btn-primary" onclick="saveEvent()">Enregistrer</button>
@@ -440,20 +441,18 @@ function launchConfetti(name){
   wname.textContent='Bonjour '+name+' 👋';
   const c=getC(name);
   const colors=[c.dot,c.bg,'#f5f2ec','#1c4a2e','#e4ede6','#faf0e3','#ffffff','#2d6b42','#a8d8b0'];
-  for(let i=0;i<100;i++){
+  for(let i=0;i<160;i++){
     const el=document.createElement('div');
     el.className='confetto';
-    const size=Math.random()*12+5;
-    el.style.cssText=`left:${Math.random()*100}vw;top:-20px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'2px'};animation-duration:${Math.random()*1.5+1.2}s;animation-delay:${Math.random()*0.5}s;opacity:1;`;
+    const size=Math.random()*14+4;
+    el.style.cssText=`left:${Math.random()*110-5}vw;top:-20px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.4?'50%':Math.random()>0.5?'2px':'50% 0'};animation-duration:${Math.random()*1.5+1.8}s;animation-delay:${Math.random()*0.8}s;opacity:1;`;
     screen.appendChild(el);
   }
-  // Show welcome message immediately
   setTimeout(()=>welcome.classList.add('show'),50);
-  // After 1.5s hide confetti and message
   setTimeout(()=>{
     welcome.classList.remove('show');
     screen.classList.remove('active');
-  },1500);
+  },2000);
 }
 
 // CONFLICT
@@ -507,6 +506,7 @@ function eCard(d,showAnim){
         ${d.format?'<span class="tag tag-fmt">'+d.format+'</span>':''} 
         ${!d.confirmed||d.animateur==='?'?'<span class="tag tag-tbd">À décerner</span>':''} 
         ${d.note?'<span class="tag tag-note">⚠ '+d.note+'</span>':''} 
+        ${d.comment?'<span class="tag" style="background:#f0eee8;color:var(--text-muted);">💬 '+d.comment+'</span>':''}
         ${rem}
       </div>
     </div>
@@ -584,12 +584,12 @@ function refresh(){if(currentTab==='general')renderGeneral();else if(currentTab=
 // MODAL EVENT
 function buildAnimSel(sel){document.getElementById('f-anim').innerHTML=`<option value="?">— À décerner —</option>`+ANIMS.map(a=>`<option value="${a.name}"${a.name===sel?' selected':''} >${a.name}</option>`).join('');if(sel)document.getElementById('f-anim').value=sel;}
 function openModal(type){
-  if(type==='event'){document.getElementById('modal-event-title').textContent='Nouvelle animation';document.getElementById('f-id').value='';['f-date','f-lieu','f-format'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-slot').value='Anim 1';document.getElementById('f-confirmed').value='1';buildAnimSel('');}
+  if(type==='event'){document.getElementById('modal-event-title').textContent='Nouvelle animation';document.getElementById('f-id').value='';['f-date','f-lieu','f-format','f-comment'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-slot').value='Anim 1';document.getElementById('f-confirmed').value='1';buildAnimSel('');}
   else{document.getElementById('modal-profil-title').textContent='Ajouter un animateur';document.getElementById('fp-id').value='';document.getElementById('fp-name').value='';buildColorPicker(COLORS[0].name);}
   document.getElementById('modal-'+type).classList.add('open');
 }
 function openModalForAnim(name,month){openModal('event');buildAnimSel(name);const map={Juin:'2026-06-01',Juillet:'2026-07-01',Août:'2026-08-01'};if(map[month])document.getElementById('f-date').value=map[month];}
-function editEvent(id){const d=DATA.find(d=>String(d.id)===String(id));if(!d)return;document.getElementById('modal-event-title').textContent="Modifier l'animation";document.getElementById('f-id').value=id;document.getElementById('f-date').value=d.date;document.getElementById('f-lieu').value=d.lieu;document.getElementById('f-format').value=d.format||'';;document.getElementById('f-slot').value=d.slot;document.getElementById('f-confirmed').value=d.confirmed?'1':'0';buildAnimSel(d.animateur);document.getElementById('modal-event').classList.add('open');}
+function editEvent(id){const d=DATA.find(d=>String(d.id)===String(id));if(!d)return;document.getElementById('modal-event-title').textContent="Modifier l'animation";document.getElementById('f-id').value=id;document.getElementById('f-date').value=d.date;document.getElementById('f-lieu').value=d.lieu;document.getElementById('f-format').value=d.format||'';document.getElementById('f-comment').value=d.comment||'';document.getElementById('f-slot').value=d.slot;document.getElementById('f-confirmed').value=d.confirmed?'1':'0';buildAnimSel(d.animateur);document.getElementById('modal-event').classList.add('open');}
 function closeModal(type){document.getElementById('modal-'+type).classList.remove('open');}
 async function saveEvent(){
   const id=document.getElementById('f-id').value;
@@ -601,7 +601,7 @@ async function saveEvent(){
   const confirmed=document.getElementById('f-confirmed').value==='1';
   if(!date||!lieu){alert('Merci de remplir la date et le lieu.');return;}
   if(hasConflict(animateur,date,id)){closeModal('event');showConflict(animateur,date);return;}
-  const body={date,lieu,animateur,format,slot,confirmed,note:''};
+  const comment=document.getElementById('f-comment').value.trim();const body={date,lieu,animateur,format,slot,confirmed,note:'',comment};
   if(!id){const nid='local-'+Date.now();DATA.push({...body,id:nid});toast('Animation ajoutée ✓');if(sbReady){try{const r=await sbIns('animations',body);const idx=DATA.findIndex(d=>d.id===nid);if(idx>-1)DATA[idx]=r;}catch(e){}}}
   else{const idx=DATA.findIndex(d=>String(d.id)===String(id));if(idx>-1)DATA[idx]={...DATA[idx],...body};toast('Animation modifiée ✓');if(sbReady){try{await sbUpd('animations',id,body);}catch(e){}}}
   closeModal('event');refresh();
@@ -651,9 +651,10 @@ function showLogin(){
 }
 function selectUser(name){
   currentUser=name;
-  // Cache login immédiatement
   document.getElementById('login-screen').classList.add('hidden');
-  // Lance confettis + message sur la plateforme
+  // Navigate to personal planning
+  const anim = ANIMS.find(a=>a.name===name);
+  if(anim) navToAnim(name, null);
   launchConfetti(name);
 }
 function switchUser(){document.getElementById('login-screen').classList.remove('hidden');document.getElementById('user-badge').style.display='none';}
