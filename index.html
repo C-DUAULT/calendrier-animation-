@@ -162,6 +162,17 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 .toastEl{position:fixed;bottom:calc(78px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(10px);background:var(--acc);color:#fff;padding:10px 22px;border-radius:20px;font-size:12px;font-weight:500;z-index:999;opacity:0;transition:all 0.2s;pointer-events:none;white-space:nowrap;}
 .toastEl.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .pwd{position:fixed;bottom:calc(56px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);font-size:9px;color:var(--text);font-weight:600;pointer-events:none;white-space:nowrap;z-index:190;letter-spacing:0.04em;opacity:0.65;}
+.bell-btn{position:relative;width:36px;height:36px;border-radius:50%;background:var(--accl);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--acc);}
+.bell-count{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:#c0392b;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.bell-panel{position:fixed;top:58px;right:0;width:320px;max-width:95vw;max-height:70vh;background:var(--white);border:1px solid var(--border);border-radius:0 0 0 16px;z-index:450;overflow-y:auto;transform:translateY(-10px);opacity:0;pointer-events:none;transition:all 0.2s;box-shadow:0 8px 32px rgba(10,20,12,0.12);}
+.bell-panel.open{transform:translateY(0);opacity:1;pointer-events:all;}
+.bell-overlay{position:fixed;inset:0;z-index:440;display:none;}
+.bell-overlay.open{display:block;}
+.bell-panel-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--border-light);}
+.bell-item{padding:12px 16px;border-bottom:1px solid var(--bl);font-size:12px;line-height:1.5;}
+.bell-item:last-child{border-bottom:none;}
+.bell-item-time{font-size:10px;color:var(--faint);margin-top:3px;}
+.bell-item.unread{background:var(--accl);}
 .chat-msgs{height:calc(100vh - 240px);overflow-y:auto;padding-bottom:8px;}
 .chat-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:10px;}
 .chat-row.mine{flex-direction:row-reverse;}
@@ -229,6 +240,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="tbr">
     <div class="ubadge" id="ubadge" onclick="switchUser()" style="display:none;"></div>
+    <button class="bell-btn" id="bell-btn" onclick="toggleBell()" style="display:none;" title="Notifications">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="bell-count" id="bell-count" style="display:none;"></span>
+    </button>
     <button class="tadd" onclick="openM('ev')">+</button>
   </div>
 </header>
@@ -354,6 +369,15 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
 </div>
 
 <div class="toastEl" id="toastEl"></div>
+
+<div class="bell-panel" id="bell-panel">
+  <div class="bell-panel-header">
+    <div style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--acc);">Notifications</div>
+    <button onclick="clearBell()" style="font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;">Tout effacer</button>
+  </div>
+  <div id="bell-list"><div style="text-align:center;color:var(--muted);font-size:13px;padding:20px;">Aucune notification</div></div>
+</div>
+<div class="bell-overlay" id="bell-overlay" onclick="closeBell()"></div>
 <script>const SB='https://lwumkmywtjsogpbkczdk.supabase.co';
 const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3dW1rbXl3dGpzb2dwYmtjemRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1NzQxOTksImV4cCI6MjA5NjE1MDE5OX0.7AQQXbdhKjJ6F973hGaQdJ2U-L6wGA-xfp7blgGqerk';
 const DAYS=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
@@ -560,7 +584,12 @@ function renderHome(){
 
 // ── NOTIFICATION ──────────────────────────────────────────────────────────
 function checkPendingNotif(name){
-  const pending=DATA.filter(d=>d.animateur===name&&d.confirmed===false&&!d.notif_seen&&dU(d.date)>=0);
+  // Only show notif for events where notif_seen is strictly false (not null, not undefined)
+  const pending=DATA.filter(d=>
+    d.animateur===name &&
+    d.notif_seen===false &&
+    dU(d.date)>=0
+  );
   if(pending.length>0)showAnimNotif(pending[0]);
 }
 function showAnimNotif(ev){
@@ -580,21 +609,27 @@ async function respondNotif(rep){
   document.getElementById('notif-overlay').classList.remove('open');
   const idx=DATA.findIndex(d=>sid(d.id)===id);
   if(idx>-1){
+    // Mark as seen immediately - will never show again
     DATA[idx].notif_seen=true;
     if(rep==='oui'){DATA[idx].confirmed=true;toast('Super, tu es confirme !');}
     else if(rep==='non'){toast('Pas de souci !');}
     else{toast('Reponse envoyee !');}
+    // Save to DB immediately so other devices also know
     if(sbOk){
       try{
         const upd={notif_seen:true};
         if(rep==='oui')upd.confirmed=true;
         if(altdate)upd.alt_date=altdate;
         await sbUpd('animations',id,upd);
+        // Reload DATA from DB to get fresh notif_seen values
+        const fresh=await sbGet('animations');
+        if(Array.isArray(fresh)&&fresh.length>0)DATA=fresh;
       }catch(e){}
     }
   }
   refresh();
-  const remaining=DATA.filter(d=>d.animateur===curAnim&&!d.confirmed&&!d.notif_seen&&dU(d.date)>=0);
+  // Check if more unseen notifs
+  const remaining=DATA.filter(d=>d.animateur===curAnim&&d.notif_seen===false&&dU(d.date)>=0);
   if(remaining.length>0)setTimeout(()=>showAnimNotif(remaining[0]),400);
 }
 function toggleAltDate(show){
@@ -901,6 +936,7 @@ async function sendMsg(){
   if(!content||!curUser)return;
   const msg={author:curUser,content,created_at:new Date().toISOString()};
   MSGS.push(msg);input.value='';
+  addBellNotif(`${curUser} dans le chat : ${content.substring(0,40)}${content.length>40?'...':''}`,'chat');
   renderChat();
   if(sbOk)try{await sbIns('messages',msg);}catch(e){}
 }
@@ -919,7 +955,7 @@ NOA_IMG.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANQAAADTCAYAAAD52z2gA
 const CSIZE=380;
 function stopSnake(){
   if(snakeInterval){clearInterval(snakeInterval);snakeInterval=null;}
-  document.removeEventListener('keydown',snakeKey);
+  window.removeEventListener('keydown',snakeKey);
 }
 
 async function loadScores(){
@@ -986,7 +1022,9 @@ function initSnakeView(){
     const el=document.getElementById('snake-best');
     if(el&&myBest)el.textContent=`Ton record : ${myBest.score} pts`;
   }
-  document.addEventListener('keydown',snakeKey);
+  window.addEventListener('keydown',snakeKey);
+  const canvas=document.getElementById('snake-canvas');
+  if(canvas){canvas.setAttribute('tabindex','0');canvas.focus();}
 }
 
 function randPos(snake,traps){
@@ -1014,7 +1052,7 @@ function snakeDir(dx,dy){
 }
 function snakeKey(e){
   const map={'ArrowUp':[0,-1],'ArrowDown':[0,1],'ArrowLeft':[-1,0],'ArrowRight':[1,0]};
-  if(map[e.key]){e.preventDefault();snakeDir(...map[e.key]);}
+  if(map[e.key]){e.preventDefault();e.stopPropagation();snakeDir(...map[e.key]);return false;}
 }
 
 function snakeTick(){
@@ -1148,6 +1186,7 @@ function selectUser(name){
   const b=document.getElementById('ubadge');
   b.style.display='flex';b.style.background=c.bg;b.style.color=c.dot;b.style.borderColor=c.dot;
   b.innerHTML=`<span style="width:8px;height:8px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${name}`;
+  document.getElementById('bell-btn').style.display='flex';
   navToAnim(name,null);
   setTimeout(()=>launchConfetti(name),50);
   // Notif arrives AFTER confetti ends (2s)
@@ -1178,6 +1217,57 @@ function launchConfetti(name){
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────
+// ── BELL NOTIFICATIONS ───────────────────────────────────────────────────
+let BELL_NOTIFS=[];
+function toggleBell(){
+  const panel=document.getElementById('bell-panel');
+  const overlay=document.getElementById('bell-overlay');
+  panel.classList.toggle('open');
+  overlay.classList.toggle('open');
+  if(panel.classList.contains('open')){
+    // Mark all as read
+    BELL_NOTIFS.forEach(n=>n.read=true);
+    updateBellCount();
+  }
+}
+function closeBell(){
+  document.getElementById('bell-panel').classList.remove('open');
+  document.getElementById('bell-overlay').classList.remove('open');
+}
+function clearBell(){
+  BELL_NOTIFS=[];
+  updateBellCount();
+  renderBellList();
+  closeBell();
+}
+function addBellNotif(text,type='info'){
+  BELL_NOTIFS.unshift({text,type,time:new Date(),read:false});
+  if(BELL_NOTIFS.length>50)BELL_NOTIFS=BELL_NOTIFS.slice(0,50);
+  updateBellCount();
+  renderBellList();
+}
+function updateBellCount(){
+  const unread=BELL_NOTIFS.filter(n=>!n.read).length;
+  const cnt=document.getElementById('bell-count');
+  if(cnt){
+    cnt.style.display=unread>0?'flex':'none';
+    cnt.textContent=unread>9?'9+':unread;
+  }
+}
+function renderBellList(){
+  const list=document.getElementById('bell-list');
+  if(!list)return;
+  if(!BELL_NOTIFS.length){list.innerHTML='<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px;">Aucune notification</div>';return;}
+  list.innerHTML=BELL_NOTIFS.map(n=>{
+    const t=new Date(n.time);
+    const timeStr=t.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+' · '+t.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
+    return `<div class="bell-item${n.read?'':' unread'}">
+      ${n.type==='anim'?'📅':n.type==='chat'?'💬':'🔔'} ${n.text}
+      <div class="bell-item-time">${timeStr}</div>
+    </div>`;
+  }).join('');
+}
+
 async function init(){
   ANIMS=DEF_A.map((a,i)=>({...a,id:`d-${i}`}));
   DATA=DEF_E.map((d,i)=>({...d,id:`d-${i}`}));
