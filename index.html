@@ -477,7 +477,6 @@ function navToAnim(name,el){
   if(el)el.classList.add('active');
   closeD();stopChatPoll();stopSnake();
   renderAnim(name);
-  checkPendingNotif(name);
 }
 
 // ── ACCUEIL ───────────────────────────────────────────────────────────────
@@ -1092,7 +1091,7 @@ function snakeDraw(){
     ctx.fillStyle=i===0?'#1c4a2e':`rgba(45,107,66,${ratio})`;
     ctx.beginPath();
     const r=i===0?SZ/2-1:SZ/2-2;
-    ctx.roundRect(p.x*SZ+1,p.y*SZ+1,SZ-2,SZ-2,r);
+    ctx.beginPath();const rad=r;ctx.moveTo(p.x*SZ+1+rad,p.y*SZ+1);ctx.lineTo(p.x*SZ+SZ-2-rad,p.y*SZ+1);ctx.arcTo(p.x*SZ+SZ-2,p.y*SZ+1,p.x*SZ+SZ-2,p.y*SZ+1+rad,rad);ctx.lineTo(p.x*SZ+SZ-2,p.y*SZ+SZ-2-rad);ctx.arcTo(p.x*SZ+SZ-2,p.y*SZ+SZ-2,p.x*SZ+SZ-2-rad,p.y*SZ+SZ-2,rad);ctx.lineTo(p.x*SZ+1+rad,p.y*SZ+SZ-2);ctx.arcTo(p.x*SZ+1,p.y*SZ+SZ-2,p.x*SZ+1,p.y*SZ+SZ-2-rad,rad);ctx.lineTo(p.x*SZ+1,p.y*SZ+1+rad);ctx.arcTo(p.x*SZ+1,p.y*SZ+1,p.x*SZ+1+rad,p.y*SZ+1,rad);ctx.closePath();
     ctx.fill();
     if(i===0){
       // Eyes
@@ -1136,6 +1135,8 @@ function selectUser(name){
   b.innerHTML=`<span style="width:8px;height:8px;border-radius:50%;background:${c.dot};display:inline-block;"></span>${name}`;
   navToAnim(name,null);
   setTimeout(()=>launchConfetti(name),50);
+  // Notif arrives AFTER confetti ends (2s)
+  setTimeout(()=>checkPendingNotif(name),2200);
 }
 function switchUser(){
   stopSnake();stopChatPoll();curUser=null;
