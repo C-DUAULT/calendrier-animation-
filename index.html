@@ -521,8 +521,9 @@ function showToast(msg) {
 // BELL NOTIFICATIONS
 // ═══════════════════════════════════════════════════════
 function addNotif(text, type) {
-  NOTIFS.unshift({text, type, time:new Date(), read:false});
+  NOTIFS.unshift({text, type, time:new Date().toISOString(), read:false});
   if(NOTIFS.length>60) NOTIFS=NOTIFS.slice(0,60);
+  try{ localStorage.setItem('noa_notifs', JSON.stringify(NOTIFS)); }catch(e){}
   renderBell();
 }
 function renderBell() {
@@ -534,7 +535,7 @@ function renderBell() {
   if(!NOTIFS.length){ list.innerHTML='<div class="bell-empty">Aucune notification</div>'; return; }
   const icons={anim:'📅',chat:'💬',info:'🔔'};
   list.innerHTML=NOTIFS.map(n=>{
-    const t=new Date(n.time);
+    const t=n.time?new Date(n.time):new Date();
     const ts=t.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+' · '+t.toLocaleDateString('fr-FR',{day:'numeric',month:'short'});
     return `<div class="bell-item${n.read?'':' unread'}">${icons[n.type]||'🔔'} ${n.text}<div class="bell-time">${ts}</div></div>`;
   }).join('');
@@ -544,7 +545,7 @@ function toggleBell() {
   const o=document.getElementById('bell-bg');
   const open=p.classList.toggle('open');
   o.classList.toggle('open');
-  if(open){ NOTIFS.forEach(n=>n.read=true); renderBell(); }
+  if(open){ NOTIFS.forEach(n=>n.read=true); try{localStorage.setItem('noa_notifs',JSON.stringify(NOTIFS));}catch(e){} renderBell(); }
 }
 function closeBell() {
   document.getElementById('bell-panel').classList.remove('open');
@@ -552,6 +553,7 @@ function closeBell() {
 }
 function clearNotifs() {
   NOTIFS=[];
+  try{ localStorage.removeItem('noa_notifs'); }catch(e){}
   renderBell();
   closeBell();
 }
@@ -1362,6 +1364,9 @@ async function init() {
   buildDrawer(); renderHome(); renderGen(); renderRap();
   showLogin();
 
+  // Restore bell notifs from localStorage
+  try{ const saved=localStorage.getItem('noa_notifs'); if(saved){NOTIFS=JSON.parse(saved);renderBell();} }catch(e){}
+
   // Load from Supabase in background
   try {
     let anims  = await sbGet('animateurs');
@@ -1372,6 +1377,7 @@ async function init() {
     await loadScores();
     try{ MSGS=await sbGet('messages','order=created_at&'); }catch(e){}
     buildDrawer(); refresh();
+    renderBell();
     if(!document.getElementById('lscr').classList.contains('hidden')) showLogin();
   } catch(e) { console.warn('Mode hors-ligne:', e.message); }
 }
