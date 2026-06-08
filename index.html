@@ -303,7 +303,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
     </div>
     <div class="ni" id="n-chat" onclick="goTab('chat',this)">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      <div><div>Chat equipe</div><div class="ni-sub" id="chat-preview"></div></div>
+      <div style="flex:1;min-width:0;"><div style="display:flex;align-items:center;gap:6px;">Chat equipe <span id="chat-dot" style="display:none;background:#e24b4a;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;"></span></div><div class="ni-sub" id="chat-preview"></div></div>
     </div>
     <div class="ni" id="n-adm" onclick="goTab('adm',this)">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -346,9 +346,10 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
     Rappels <span class="bdot" id="bdot"></span>
   </button>
-  <button class="bni" id="b-chat" onclick="goTab('chat',null,'chat')">
+  <button class="bni" id="b-chat" onclick="goTab('chat',null,'chat')" style="position:relative;">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     Chat
+    <span id="chat-bdot" style="display:none;position:absolute;top:8px;right:calc(50% - 14px);width:8px;height:8px;border-radius:50%;background:#e24b4a;"></span>
   </button>
   <button class="bni" id="b-adm" onclick="goTab('adm',null,'adm')">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
@@ -1025,8 +1026,22 @@ async function respondNotif(rep) {
 // ═══════════════════════════════════════════════════════
 // CHAT
 // ═══════════════════════════════════════════════════════
+function updateChatDot() {
+  const lastSeen = parseInt(localStorage.getItem('noa_chat_seen')||'0');
+  const unread = MSGS.length - lastSeen;
+  const dot = document.getElementById('chat-dot');
+  const bdot2 = document.getElementById('chat-bdot');
+  if(dot)  dot.style.display  = unread>0 ? 'flex' : 'none';
+  if(bdot2) bdot2.style.display = unread>0 ? 'block' : 'none';
+  if(dot)  dot.textContent = unread>9 ? '9+' : String(unread);
+}
+function markChatSeen() {
+  localStorage.setItem('noa_chat_seen', String(MSGS.length));
+  updateChatDot();
+}
 async function renderChat() {
   if(sbOk) try{ MSGS=await sbGet('messages','order=created_at&'); }catch(e){}
+  markChatSeen();
   const c=curUser?gCol(curUser):{d:'#888',b:'#eee'};
   let h=`<div class="chat-msgs" id="chat-msgs">`;
   if(!MSGS.length) h+='<div style="text-align:center;color:var(--muted);font-size:13px;padding:30px;">Aucun message — soyez le premier !</div>';
@@ -1058,6 +1073,7 @@ async function sendMsg() {
   const msg={author:curUser, content, created_at:new Date().toISOString()};
   MSGS.push(msg); input.value='';
   addNotif(`${curUser} dans le chat : ${content.slice(0,40)}${content.length>40?'...':''}`, 'chat');
+  markChatSeen();
   renderChat();
   if(sbOk) try{await sbInsert('messages',msg);}catch(e){}
 }
@@ -1378,7 +1394,17 @@ async function init() {
     try{ MSGS=await sbGet('messages','order=created_at&'); }catch(e){}
     buildDrawer(); refresh();
     renderBell();
+    updateChatDot();
     if(!document.getElementById('lscr').classList.contains('hidden')) showLogin();
+    // Poll for new messages every 30s even when not in chat
+    setInterval(async()=>{
+      if(!sbOk) return;
+      try{
+        const prev=MSGS.length;
+        MSGS=await sbGet('messages','order=created_at&');
+        if(MSGS.length>prev){updateChatDot();buildDrawer();}
+      }catch(e){}
+    }, 30000);
   } catch(e) { console.warn('Mode hors-ligne:', e.message); }
 }
 
